@@ -1,5 +1,8 @@
 require "bundler/setup"
 require "learnosity/sdk"
+require "learnosity/sdk/exceptions"
+require "learnosity/sdk/request"
+require "learnosity/sdk/request/init"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
