@@ -145,6 +145,97 @@ in the request.
 
 This will `require 'json'` to be able to parse the response.
 
+### Rails
+
+You can bootstrap a Ruby-on-Rails project using this SDK by doing the
+following.
+
+Note, this is a quick 0 to 100 in 10s examples of how to use this
+SDK with Rails. As such, it takes many unwise shortcuts in the architecture of
+the app; do not take this as the example of a good Rails app.
+
+First, generate a skeleton project
+
+    rails new lrn-sdk-rails
+    cd lrn-sdk-rails
+
+Add the `learnosity-sdk` as a dependency to this project
+
+    echo "gem 'learnosity-sdk' >> Gemfile
+    bundle install
+
+Create a default controller
+
+    rails generate controller Index index
+
+Add the `require` for the SDK at the top of the newly created controller,
+`app/controllers/index_controller.rb`, and insert the assessment configuration
+there (taken from [items-api-demo], and truncated for legibility).
+
+```ruby
+require 'learnosity/sdk/request/init'
+
+class IndexController < ApplicationController
+  @@security_packet = {
+    'consumer_key'   => 'yis0TYCu7U9V4o7M',
+    'domain'         => 'localhost'
+  }
+  # XXX: The consumer secret should be in a properly secured credential store, and *NEVER* checked in in revision control
+  @@consumer_secret = '74c5fd430cf1242a527f6223aebd42d30464be22'
+  @@items_request = {
+	[...]
+  }
+
+  def index
+    init = Learnosity::Sdk::Request::Init.new(
+      'items',
+      @@security_packet,
+      @@consumer_secret,
+      @@items_request
+    )
+  end
+end
+```
+
+Add the HTML/Javascript boilerplate to the view, `app/views/index/index.html.erb`
+
+```
+<h1>Index#index</h1>
+
+<div id="learnosity_assess"></div>
+
+<script src="//items.learnosity.com"></script>
+<script>
+  var eventOptions = {
+    readyListener: init
+  },
+    itemsApp = LearnosityItems.init(<%= raw(@init.generate) %>);
+
+  function init () {
+    var assessApp = itemsApp.assessApp();
+
+
+    assessApp.on('item:load', function () {
+      console.log('Active item:', getActiveItem(this.getItems()));
+    });
+
+    assessApp.on('test:submit:success', function () {
+      toggleModalClass();
+    });
+  }
+</script>
+```
+
+Finally, you can serve the project with
+
+    rails serve
+
+
+It will become available at http://localhost:3000/index/index
+
+For reference you can find the result of these steps in
+`examples/lrn-sdk-rails`.
+
 ## Testing
 
 Just run
@@ -162,3 +253,4 @@ to exercise the testsuite
 [questions-api-doc]: https://docs.learnosity.com/assessment/questions
 [report-api-doc]: https://docs.learnosity.com/analytics/report
 [learnosity-sdk-rubygems]: https://rubygems.org/gems/learnosity-sdk
+[items-api-demo]: http://demos.learnosity.com/assessment/items/itemsapi_assess.php
