@@ -1,4 +1,5 @@
 require 'learnosity/sdk/request/init'
+require 'securerandom'
 
 class IndexController < ApplicationController
   @@security_packet = {
@@ -87,7 +88,7 @@ class IndexController < ApplicationController
     ],
     "name" => "Items API demo - assess activity",
     "rendering_type" => "assess",
-    "session_id" => "696a9473-c83e-475b-81a5-4ab9d73ba1b6",
+    "session_id" => SecureRandom.uuid,
     "state" => "initial",
     "type" => "submit_practice",
     "user_id" => "demo_student"

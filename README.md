@@ -95,7 +95,6 @@ the API.
 </html>
 ```
 
-
 ### Data API
 
 When the `service` parameter is `data`, the `action` parameter is mandatory.
@@ -107,6 +106,7 @@ send `POST` requests).
 ```ruby
 require 'net/http'
 require "learnosity/sdk/request/init"
+
 
 security_packet = {
         'consumer_key'   => 'yis0TYCu7U9V4o7M',
@@ -144,6 +144,17 @@ in the request.
 	data_request['next'] = JSON.parse(res.body)['meta']['next']
 
 This will `require 'json'` to be able to parse the response.
+
+### Generating UUIDs
+
+You will likely have to generate UUIDs. You can use the Ruby `securerandom`
+module for this purpose.
+
+```ruby
+require 'securerandom'
+
+p SecureRandom.uuid
+```
 
 ### Rails
 
