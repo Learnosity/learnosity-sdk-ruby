@@ -1,0 +1,24 @@
+<h1>Index#index</h1>
+
+<div id="learnosity_assess"></div>
+
+<script src="//items.learnosity.com"></script>
+<script>
+  var eventOptions = {
+    readyListener: init
+  },
+    itemsApp = LearnosityItems.init(<%= raw @init.generate %>);
+
+  function init () {
+    var assessApp = itemsApp.assessApp();
+
+
+    assessApp.on('item:load', function () {
+      console.log('Active item:', getActiveItem(this.getItems()));
+    });
+
+    assessApp.on('test:submit:success', function () {
+      toggleModalClass();
+    });
+  }
+</script>
