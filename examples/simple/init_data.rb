@@ -23,7 +23,7 @@ data_request = { 'limit' => 1 }
 
 	request = init.generate
 
-	itembankUri = URI('https://data.learnosity.com/latest/itembank/items')
+	itembankUri = URI('https://data.learnosity.com/v1/itembank/items')
 	puts ">>> [#{itembankUri} (#{reqno})] #{JSON.generate(request)}"
 
 	res = Net::HTTP.post_form(itembankUri, request)

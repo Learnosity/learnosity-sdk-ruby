@@ -125,7 +125,7 @@ init = Learnosity::Sdk::Request::Init.new(
 
 request = init.generate
 
-Net::HTTP.post_form URI('https://data.learnosity.com/latest/itembank/items'), request
+Net::HTTP.post_form URI('https://data.learnosity.com/v1/itembank/items'), request
 ```
 
 ### Recursive Queries
@@ -144,6 +144,8 @@ in the request.
 	data_request['next'] = JSON.parse(res.body)['meta']['next']
 
 This will `require 'json'` to be able to parse the response.
+
+See `examples/simple/init_data.rb` for an example.
 
 ### Generating UUIDs
 
