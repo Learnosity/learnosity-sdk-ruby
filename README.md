@@ -1,5 +1,7 @@
 # Learnosity SDK - Ruby
 
+[![Gem Version](https://badge.fury.io/rb/learnosity-sdk.svg)](https://badge.fury.io/rb/learnosity-sdk)
+
 This gem allows to ease integration with the following Learnosity APIs,
 
 - Author API [author-api-doc]
