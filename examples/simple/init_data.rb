@@ -30,5 +30,9 @@ data_request = { 'limit' => 1 }
 
 	puts "<<< [#{res.code}] #{res.body}"
 
-	data_request['next'] = JSON.parse(res.body)['meta']['next']
+	response = JSON.parse(res.body)
+	if ( !response['meta']['next'].nil? \
+			and !response['meta']['records'].nil? and response['meta']['records'] > 0)
+		data_request['next'] = response['meta']['next']
+	end
 end

@@ -1,5 +1,7 @@
 # Learnosity SDK - Ruby
 
+[![Gem Version](https://badge.fury.io/rb/learnosity-sdk.svg)](https://badge.fury.io/rb/learnosity-sdk)
+
 This gem allows to ease integration with the following Learnosity APIs,
 
 - Author API [author-api-doc]
@@ -141,7 +143,13 @@ For the time being, you can iterate through pages by looping over the
 `Init#new`/`Init#generate`/`Net::HTTP#post_form`, updating the `next` attribute
 in the request.
 
-	data_request['next'] = JSON.parse(res.body)['meta']['next']
+```ruby
+response = JSON.parse(res.body)
+if ( !response['meta']['next'].nil? \
+		and !response['meta']['records'].nil? and response['meta']['records'] > 0)
+	data_request['next'] = response['meta']['next']
+end
+```
 
 This will `require 'json'` to be able to parse the response.
 
@@ -212,7 +220,7 @@ end
 
 Add the HTML/Javascript boilerplate to the view, `app/views/index/index.html.erb`
 
-```
+```erb
 <h1>Index#index</h1>
 
 <div id="learnosity_assess"></div>
