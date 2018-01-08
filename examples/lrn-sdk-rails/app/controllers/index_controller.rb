@@ -3,6 +3,7 @@ require 'securerandom'
 
 class IndexController < ApplicationController
   @@security_packet = {
+    # XXX: This is a Learnosity Demos consumer; replace it with your own consumer key
     'consumer_key'   => 'yis0TYCu7U9V4o7M',
     'domain'         => 'localhost'
   }

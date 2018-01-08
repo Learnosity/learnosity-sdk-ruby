@@ -62,9 +62,11 @@ say, the `items` API, you just need to instantiate the
 require "learnosity/sdk/request/init"
 
 security_packet = {
-        'consumer_key'   => 'yis0TYCu7U9V4o7M',
-        'domain'         => 'localhost',
+	# XXX: This is a Learnosity Demos consumer; replace it with your own consumer key
+	'consumer_key'   => 'yis0TYCu7U9V4o7M',
+	'domain'         => 'localhost'
 }
+# XXX: The consumer secret should be in a properly secured credential store, and *NEVER* checked in in revision control
 consumer_secret = '74c5fd430cf1242a527f6223aebd42d30464be22'
 items_request = { 'limit' => 50 }
 
@@ -111,9 +113,11 @@ require "learnosity/sdk/request/init"
 
 
 security_packet = {
-        'consumer_key'   => 'yis0TYCu7U9V4o7M',
-        'domain'         => 'localhost',
+	# XXX: This is a Learnosity Demos consumer; replace it with your own consumer key
+	'consumer_key'   => 'yis0TYCu7U9V4o7M',
+	'domain'         => 'localhost'
 }
+# XXX: The consumer secret should be in a properly secured credential store, and *NEVER* checked in in revision control
 consumer_secret = '74c5fd430cf1242a527f6223aebd42d30464be22'
 data_request = { 'limit' => 50 }
 
@@ -198,6 +202,7 @@ require 'learnosity/sdk/request/init'
 
 class IndexController < ApplicationController
   @@security_packet = {
+    # XXX: This is a Learnosity Demos consumer; replace it with your own consumer key
     'consumer_key'   => 'yis0TYCu7U9V4o7M',
     'domain'         => 'localhost'
   }
