@@ -1,6 +1,7 @@
 # Learnosity SDK - Ruby
 
-[![Gem Version](https://badge.fury.io/rb/learnosity-sdk.svg)](https://badge.fury.io/rb/learnosity-sdk)
+[![Gem Version](https://badge.fury.io/rb/learnosity-sdk.svg)](https://badge.fury.io/rb/learnosity-sdk) [![Build
+Status](https://travis-ci.org/Learnosity/learnosity-sdk-ruby.svg?branch=master)](https://travis-ci.org/Learnosity/learnosity-sdk-ruby)
 
 This gem allows to ease integration with the following Learnosity APIs,
 
