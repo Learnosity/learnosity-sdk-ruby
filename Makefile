@@ -1,3 +1,7 @@
+ENV=prod
+REGION=.learnosity.com
+# Data API
+VER=v1
 
 all: devbuild test
 
@@ -8,12 +12,12 @@ devbuild: build
 build: install-deps
 	rake build
 
-test: test-unit test-integration-dev dist-check-version
+test: test-unit test-integration-env
 test-unit: install-deps
-	rake spec
+	rake spec SPEC=spec/learnosity/*
 
-test-integration-dev: venv pip-tox
-	$(error not implemented)
+test-integration-env:
+	rake spec SPEC=spec/integration/*
 
 build-clean: real-clean
 
