@@ -21,6 +21,8 @@ checks:
 
 plugins:
   # Ruby
+  bundler-audit:
+    enabled: true
   rubocop:
     enabled: true
   duplication:
