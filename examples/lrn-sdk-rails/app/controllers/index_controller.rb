@@ -92,7 +92,7 @@ class IndexController < ApplicationController
     "session_id" => SecureRandom.uuid,
     "state" => "initial",
     "type" => "submit_practice",
-    "user_id" => "demo_student"
+    "user_id" => "$ANONYMIZED_USER_ID"
   }
 
   def index
