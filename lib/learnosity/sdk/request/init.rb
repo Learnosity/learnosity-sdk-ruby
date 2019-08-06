@@ -25,19 +25,19 @@ module Learnosity
         def initialize(service, security_packet, secret, request_packet = nil, action = nil)
           @sign_request_data = false
           @service = service
-          @security_packet = security_packet.clone if ! security_packet.nil?
+          @security_packet = security_packet.clone unless security_packet.nil?
           @secret = secret
-          @request_packet = request_packet.clone if ! request_packet.nil?
+          @request_packet = request_packet.clone unless request_packet.nil?
           @action = action
 
-          self.validate()
-          self.set_service_options()
+          validate
+          set_service_options
 
-          @request_string = self.generate_request_string()
-          @security_packet['signature'] = self.generate_signature()
+          @request_string = generate_request_string
+          @security_packet['signature'] = generate_signature
         end
 
-        def generate_signature()
+        def generate_signature
           signature_array = []
           @@valid_security_keys.each do |k|
             if @security_packet.include? k
@@ -51,11 +51,11 @@ module Learnosity
             signature_array << @request_string
           end
 
-          if ! @action.nil?
+          unless @action.nil?
             signature_array << @action
           end
 
-          return self.hash_signature(signature_array)
+          hash_signature(signature_array)
         end
 
         def generate(encode = true)
@@ -65,7 +65,7 @@ module Learnosity
           when 'assess', 'author', 'data', 'items', 'reports'
             output['security'] =  @security_packet
 
-            if !@request_packet.nil?
+            unless @request_packet.nil?
               output['request'] = @request_packet
             end
 
@@ -75,7 +75,7 @@ module Learnosity
               if output.key?('request')
                 data_output['request'] = JSON.generate(output['request'])
               end
-              if !@action.nil?
+              unless @action.nil?
                 data_output['action'] = @action
               end
               return data_output
@@ -86,7 +86,7 @@ module Learnosity
 
           when 'questions'
             output = hash_except(@security_packet, 'domain')
-            if !@request_packet.nil?
+            unless @request_packet.nil?
               output = output.merge(@request_packet)
             end
 
@@ -97,10 +97,10 @@ module Learnosity
             raise Exception, "generate() for #{@service} not implemented"
           end
 
-          if !encode
+          unless encode
             return output
           end
-          return JSON.generate(output)
+          JSON.generate(output)
         end
 
         protected
@@ -108,7 +108,7 @@ module Learnosity
         attr_accessor :service, :secret, :request_packet, :action, :sign_request_data
         attr_writer :security_packet, :request_string
 
-        def validate()
+        def validate
           if @service.nil?
             raise Learnosity::Sdk::ValidationException, 'The `service` argument wasn\'t found or was empty'
           elsif ! @@valid_services.include? @service
@@ -120,7 +120,7 @@ module Learnosity
             raise Learnosity::Sdk::ValidationException, 'The security packet must be a Hash'
           else
             @security_packet.each do |k, v|
-              if ! @@valid_security_keys.include? k
+              unless @@valid_security_keys.include? k
                 raise ValidationException, "Invalid key found in the security packet: #{k}"
               end
             end
@@ -129,7 +129,7 @@ module Learnosity
               raise ValidationException, 'Questions API requires a `user_id` in the security packet'
             end
 
-            if ! @security_packet.include? 'timestamp'
+            unless @security_packet.include? 'timestamp'
               @security_packet['timestamp'] = Time.now.gmtime.strftime('%Y%m%d-%H%m')
             end
           end
@@ -148,7 +148,7 @@ module Learnosity
           end
         end
 
-        def set_service_options()
+        def set_service_options
           case @service
           when 'questions'
             # nothing to do
@@ -183,7 +183,7 @@ module Learnosity
               questions_api_activity = hash_except(questions_api_activity, 'expires') if questions_api_activity['expires'].nil?
 
               @security_packet = signature_parts
-              questions_api_activity['signature'] = self.generate_signature()
+              questions_api_activity['signature'] = generate_signature
               @request_packet['questionsApiActivity'] = questions_api_activity
             end
           when 'items', 'reports'
@@ -195,7 +195,7 @@ module Learnosity
           when 'events'
             hashed_users = {}
             @request_packet['users'].each do |k, v|
-              hashed_users[k] =  self.hash_value(k + @secret)
+              hashed_users[k] =  hash_value(k + @secret)
             end
             @request_packet['users'] = hashed_users
           when 'author', 'data'
@@ -205,21 +205,16 @@ module Learnosity
           end
         end
 
-        def generate_request_string()
-          request_string = nil
-          if ! @request_packet.nil?
-            request_string = JSON.generate(@request_packet)
-          end
-
-          return request_string
+        def generate_request_string
+          JSON.generate @request_packet unless request_packet.nil?
         end
 
         def hash_value(value)
-          return Digest::SHA256.hexdigest value
+		      Digest::SHA256.hexdigest value
         end
 
         def hash_signature(signature_array)
-          return self.hash_value(signature_array.join('_'))
+          hash_value(signature_array.join('_'))
         end
       end
 
