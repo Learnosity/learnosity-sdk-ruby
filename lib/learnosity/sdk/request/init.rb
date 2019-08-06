@@ -10,17 +10,17 @@ module Learnosity
 
       class Init
         # XXX: Needs to be public for unit tests
-        attr_reader :security_packet, :request_string, :isTelemetryEnabled
+        attr_reader :security_packet, :request_string, :is_telemetry_enabled
 
         # Keynames that are valid in the security_packet, they are also in
         # the correct order for signature generation.
-        @@validSecurityKeys = ['consumer_key', 'domain', 'timestamp', 'expires', 'user_id'];
+        @@valid_security_keys = ['consumer_key', 'domain', 'timestamp', 'expires', 'user_id'];
 
         # Service names that are valid for `$service`
-        @@validServices = ['assess', 'author', 'data', 'events', 'items', 'questions', 'reports'];
+        @@valid_services = ['assess', 'author', 'data', 'events', 'items', 'questions', 'reports'];
 
         # Determines if telemetry is enabled
-        @@isTelemetryEnabled = true
+        @@is_telemetry_enabled = true
 
         def initialize(service, security_packet, secret, request_packet = nil, action = nil)
           @sign_request_data = false
@@ -39,7 +39,7 @@ module Learnosity
 
         def generate_signature()
           signature_array = []
-          @@validSecurityKeys.each do |k|
+          @@valid_security_keys.each do |k|
             if @security_packet.include? k
               signature_array.<< @security_packet[k]
             end
@@ -71,14 +71,14 @@ module Learnosity
 
             case @service
             when 'data'
-              dataOutput = { 'security' => JSON.generate(output['security']) }
+              data_output = { 'security' => JSON.generate(output['security']) }
               if output.key?('request')
-                dataOutput['request'] = JSON.generate(output['request'])
+                data_output['request'] = JSON.generate(output['request'])
               end
               if !@action.nil?
-                dataOutput['action'] = @action
+                data_output['action'] = @action
               end
-              return dataOutput
+              return data_output
 
             when 'assess'
               output = output['request']
@@ -111,7 +111,7 @@ module Learnosity
         def validate()
           if @service.nil?
             raise Learnosity::Sdk::ValidationException, 'The `service` argument wasn\'t found or was empty'
-          elsif ! @@validServices.include? @service
+          elsif ! @@valid_services.include? @service
             raise Learnosity::Sdk::ValidationException, "The service provided (#{service}) is not valid"
           end
 
@@ -120,7 +120,7 @@ module Learnosity
             raise Learnosity::Sdk::ValidationException, 'The security packet must be a Hash'
           else
             @security_packet.each do |k, v|
-              if ! @@validSecurityKeys.include? k
+              if ! @@valid_security_keys.include? k
                 raise ValidationException, "Invalid key found in the security packet: #{k}"
               end
             end
@@ -154,37 +154,37 @@ module Learnosity
             # nothing to do
           when 'assess'
             if @request_packet.key?('questionsApiActivity')
-              questionsApiActivity = @request_packet['questionsApiActivity']
+              questions_api_activity = @request_packet['questionsApiActivity']
 
-              signatureParts = {}
-              signatureParts['consumer_key'] \
-                = questionsApiActivity['consumer_key'] \
+              signature_parts = {}
+              signature_parts['consumer_key'] \
+                = questions_api_activity['consumer_key'] \
                 = @security_packet['consumer_key']
 
-              signatureParts['domain'] = @security_packet['domain'] \
-                || questionsApiActivity['domain'] \
+              signature_parts['domain'] = @security_packet['domain'] \
+                || questions_api_activity['domain'] \
                 || 'assess.learnosity.com'
 
-              signatureParts['timestamp'] \
-                = questionsApiActivity['timestamp'] \
+              signature_parts['timestamp'] \
+                = questions_api_activity['timestamp'] \
                 = @security_packet['timestamp']
 
-              signatureParts['expires'] = \
-                questionsApiActivity['expires'] \
+              signature_parts['expires'] = \
+                questions_api_activity['expires'] \
                 = @security_packet['expires'] if @security_packet.key?('expires')
 
-              signatureParts['user_id'] = \
-                questionsApiActivity['user_id'] = \
+              signature_parts['user_id'] = \
+                questions_api_activity['user_id'] = \
                 @security_packet['user_id']
 
-              signatureParts['secret'] = @security_packet['secret']
+              signature_parts['secret'] = @security_packet['secret']
 
               # Remove expires attribute if present but nil
-              questionsApiActivity = hash_except(questionsApiActivity, 'expires') if questionsApiActivity['expires'].nil?
+              questions_api_activity = hash_except(questions_api_activity, 'expires') if questions_api_activity['expires'].nil?
 
-              @security_packet = signatureParts
-              questionsApiActivity['signature'] = self.generate_signature()
-              @request_packet['questionsApiActivity'] = questionsApiActivity
+              @security_packet = signature_parts
+              questions_api_activity['signature'] = self.generate_signature()
+              @request_packet['questionsApiActivity'] = questions_api_activity
             end
           when 'items', 'reports'
             @sign_request_data = true
@@ -193,11 +193,11 @@ module Learnosity
               @security_packet['user_id'] = @request_packet['user_id']
             end
           when 'events'
-            hashedUsers = {}
+            hashed_users = {}
             @request_packet['users'].each do |k, v|
-              hashedUsers[k] =  self.hash_value(k + @secret)
+              hashed_users[k] =  self.hash_value(k + @secret)
             end
-            @request_packet['users'] = hashedUsers
+            @request_packet['users'] = hashed_users
           when 'author', 'data'
             @sign_request_data = true
           else
