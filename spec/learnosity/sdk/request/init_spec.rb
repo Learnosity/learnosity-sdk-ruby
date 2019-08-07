@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'spec_helper'
 
 RSpec.describe Learnosity::Sdk::Request::Init do
   security_packet = {
@@ -10,7 +10,33 @@ RSpec.describe Learnosity::Sdk::Request::Init do
   # XXX: The consumer secret should be in a properly secured credential store, and *NEVER* checked in in revision control
   consumer_secret = '74c5fd430cf1242a527f6223aebd42d30464be22'
 
-  items_request = {'limit' => 50}
+  items_request = {
+    'user_id' => '$ANONYMIZED_USER_ID',
+    'rendering_type' => 'assess',
+    'name' => 'Items API demo - assess activity demo',
+    'state' => 'initial',
+    'activity_id' => 'items_assess_demo',
+    'session_id' => 'demo_session_uuid',
+    'type' => 'submit_practice',
+    'config' => {
+      'configuration' => {
+        'responsive_regions' => true
+      },
+      'navigation' => {
+        'scrolling_indicator' => true
+      },
+      'regions' => 'main',
+      'time' => {
+        'show_pause' => true,
+        'max_time' => 300
+      },
+      'title' => 'ItemsAPI Assess Isolation Demo',
+      'subtitle' => 'Testing Subtitle Text'
+    },
+    'items' => [
+      'Demo3'
+    ]
+  }
 
   context "validation" do
     it 'throws ValidationException on missing service' do
@@ -381,13 +407,11 @@ RSpec.describe Learnosity::Sdk::Request::Init do
     end
 
     it 'copies user_id from request to security packet if present' do
-      local_items_request = items_request.clone
-      local_items_request['user_id'] = '$ANONYMIZED_USER_ID'
       init = Learnosity::Sdk::Request::Init.new(
         'items',
         security_packet,
         consumer_secret,
-        local_items_request
+        items_request
       )
       expect(init.security_packet).to have_key('user_id')
     end
@@ -399,7 +423,8 @@ RSpec.describe Learnosity::Sdk::Request::Init do
         consumer_secret,
         items_request
       )
-      expect(init.generate_signature).to eq("d61a62083712f8136e92b40a2c5ea340c77c81a30482da6c19b9c27e72d1f5eb")
+
+      expect(init.generate_signature).to eq("82edaf80c2abb55c7a78d089f5b6f89393e621ef4a85150489ac2cfdd6a32f9a")
     end
 
     it 'can generate init options' do
@@ -409,7 +434,8 @@ RSpec.describe Learnosity::Sdk::Request::Init do
         consumer_secret,
         items_request
       )
-      expect(init.generate).to eq('{"security":{"consumer_key":"yis0TYCu7U9V4o7M","domain":"localhost","timestamp":"20140626-0528","signature":"d61a62083712f8136e92b40a2c5ea340c77c81a30482da6c19b9c27e72d1f5eb"},"request":{"limit":50}}')
+
+      expect(init.generate).to eq('{"security":{"consumer_key":"yis0TYCu7U9V4o7M","domain":"localhost","timestamp":"20140626-0528","user_id":"$ANONYMIZED_USER_ID","signature":"82edaf80c2abb55c7a78d089f5b6f89393e621ef4a85150489ac2cfdd6a32f9a"},"request":{"user_id":"$ANONYMIZED_USER_ID","rendering_type":"assess","name":"Items API demo - assess activity demo","state":"initial","activity_id":"items_assess_demo","session_id":"demo_session_uuid","type":"submit_practice","config":{"configuration":{"responsive_regions":true},"navigation":{"scrolling_indicator":true},"regions":"main","time":{"show_pause":true,"max_time":300},"title":"ItemsAPI Assess Isolation Demo","subtitle":"Testing Subtitle Text"},"items":["Demo3"]}}')
     end
   end
 
