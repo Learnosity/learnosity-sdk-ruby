@@ -1,6 +1,14 @@
 require 'spec_helper'
 
 RSpec.describe Learnosity::Sdk::Request::Init do
+  before(:all) do
+    Learnosity::Sdk::Request::Init.disable_telemetry
+  end
+
+  after(:all) do
+    Learnosity::Sdk::Request::Init.enable_telemetry
+  end
+
   security_packet = {
     # XXX: This is a Learnosity Demos consumer; replace it with your own consumer key
     'consumer_key' => 'yis0TYCu7U9V4o7M',
@@ -199,14 +207,6 @@ RSpec.describe Learnosity::Sdk::Request::Init do
     assess_questions_security_packet = security_packet.clone
     assess_questions_security_packet['user_id'] = '$ANONYMIZED_USER_ID'
 
-    before(:example) do
-      Learnosity::Sdk::Request::Init.disable_telemetry
-    end
-
-    after(:example) do
-      Learnosity::Sdk::Request::Init.enable_telemetry
-    end
-
     it 'can generate signature' do
       init = Learnosity::Sdk::Request::Init.new(
         'assess',
@@ -245,14 +245,6 @@ RSpec.describe Learnosity::Sdk::Request::Init do
       }
     }
 
-    before(:example) do
-      Learnosity::Sdk::Request::Init.disable_telemetry
-    end
-
-    after(:example) do
-      Learnosity::Sdk::Request::Init.enable_telemetry
-    end
-
     it 'can generate signature' do
       init = Learnosity::Sdk::Request::Init.new(
         'author',
@@ -276,14 +268,6 @@ RSpec.describe Learnosity::Sdk::Request::Init do
 
   context "Data API" do
     data_request = {'limit' => 100}
-
-    before(:example) do
-      Learnosity::Sdk::Request::Init.disable_telemetry
-    end
-
-    after(:example) do
-      Learnosity::Sdk::Request::Init.enable_telemetry
-    end
 
     it 'can generate signature for GET' do
       init = Learnosity::Sdk::Request::Init.new(
@@ -366,14 +350,6 @@ RSpec.describe Learnosity::Sdk::Request::Init do
       }
     }
 
-    before(:example) do
-      Learnosity::Sdk::Request::Init.disable_telemetry
-    end
-
-    after(:example) do
-      Learnosity::Sdk::Request::Init.enable_telemetry
-    end
-
     it 'can generate signature' do
       init = Learnosity::Sdk::Request::Init.new(
         'events',
@@ -398,14 +374,6 @@ RSpec.describe Learnosity::Sdk::Request::Init do
   end
 
   context "Items API" do
-    before(:example) do
-      Learnosity::Sdk::Request::Init.disable_telemetry
-    end
-
-    after(:example) do
-      Learnosity::Sdk::Request::Init.enable_telemetry
-    end
-
     it 'copies user_id from request to security packet if present' do
       init = Learnosity::Sdk::Request::Init.new(
         'items',
@@ -462,14 +430,6 @@ RSpec.describe Learnosity::Sdk::Request::Init do
     questions_security_packet = security_packet.clone
     questions_security_packet['user_id'] = '$ANONYMIZED_USER_ID'
 
-    before(:example) do
-      Learnosity::Sdk::Request::Init.disable_telemetry
-    end
-
-    after(:example) do
-      Learnosity::Sdk::Request::Init.enable_telemetry
-    end
-
     it 'can generate signature' do
       init = Learnosity::Sdk::Request::Init.new(
         'questions',
@@ -504,14 +464,6 @@ RSpec.describe Learnosity::Sdk::Request::Init do
         }
       ]
     }
-
-    before(:example) do
-      Learnosity::Sdk::Request::Init.disable_telemetry
-    end
-
-    after(:example) do
-      Learnosity::Sdk::Request::Init.enable_telemetry
-    end
 
     it 'can generate signature' do
       init = Learnosity::Sdk::Request::Init.new(
@@ -557,6 +509,8 @@ RSpec.describe Learnosity::Sdk::Request::Init do
     questions_security_packet['user_id'] = '$ANONYMIZED_USER_ID'
 
     it 'has meta key and sdk key when telemetry enabled' do
+      Learnosity::Sdk::Request::Init.enable_telemetry
+
       init = Learnosity::Sdk::Request::Init.new(
         'questions',
         questions_security_packet,
@@ -566,11 +520,11 @@ RSpec.describe Learnosity::Sdk::Request::Init do
       req = init.generate(false)
       expect(req[:meta]).not_to be_nil
       expect(req[:meta][:sdk]).not_to be_nil
+
+      Learnosity::Sdk::Request::Init.disable_telemetry
     end
 
     it 'does not have meta tag when telemetry disabled' do
-      Learnosity::Sdk::Request::Init.disable_telemetry
-
       init = Learnosity::Sdk::Request::Init.new(
         'questions',
         questions_security_packet,
@@ -579,12 +533,14 @@ RSpec.describe Learnosity::Sdk::Request::Init do
       )
       req = init.generate(false)
       expect(req[:meta]).to be_nil
-
-      Learnosity::Sdk::Request::Init.enable_telemetry
     end
 
     it 'does not affect existing meta key when telemetry is enabled' do
-      questions_request[:meta] = {
+      Learnosity::Sdk::Request::Init.enable_telemetry
+
+      questions_request_key = questions_request.clone
+
+      questions_request_key['meta'] = {
         :test => 123,
         :test2 => 456
       }
@@ -593,32 +549,40 @@ RSpec.describe Learnosity::Sdk::Request::Init do
         'questions',
         questions_security_packet,
         consumer_secret,
-        questions_request
-      )
-      req = init.generate(false)
-      expect(req[:meta]).not_to be_nil
-      expect(req[:meta][:test]).not_to be_nil
-      expect(req[:meta][:test2]).not_to be_nil
-      expect(req[:meta][:sdk]).not_to be_nil
-    end
-
-    it 'does not affect existing meta symbol when telemetry is enabled' do
-      questions_request['meta'] = {
-        :test => 123,
-        :test2 => 456
-      }
-
-      init = Learnosity::Sdk::Request::Init.new(
-        'questions',
-        questions_security_packet,
-        consumer_secret,
-        questions_request
+        questions_request_key
       )
       req = init.generate(false)
       expect(req['meta']).not_to be_nil
       expect(req['meta'][:test]).not_to be_nil
       expect(req['meta'][:test2]).not_to be_nil
       expect(req['meta'][:sdk]).not_to be_nil
+
+      Learnosity::Sdk::Request::Init.disable_telemetry
+    end
+
+    it 'does not affect existing meta symbol when telemetry is enabled' do
+      Learnosity::Sdk::Request::Init.enable_telemetry
+
+      questions_request_symbol = questions_request.clone
+
+      questions_request_symbol[:meta] = {
+        :test => 123,
+        :test2 => 456
+      }
+
+      init = Learnosity::Sdk::Request::Init.new(
+        'questions',
+        questions_security_packet,
+        consumer_secret,
+        questions_request_symbol
+      )
+      req = init.generate(false)
+      expect(req[:meta]).not_to be_nil
+      expect(req[:meta][:test]).not_to be_nil
+      expect(req[:meta][:test2]).not_to be_nil
+      expect(req[:meta][:sdk]).not_to be_nil
+
+      Learnosity::Sdk::Request::Init.disable_telemetry
     end
 
     it 'does not affect existing meta key when telemetry is disabled' do
@@ -627,8 +591,6 @@ RSpec.describe Learnosity::Sdk::Request::Init do
         :test2 => 456
       }
 
-      Learnosity::Sdk::Request::Init.disable_telemetry
-
       init = Learnosity::Sdk::Request::Init.new(
         'questions',
         questions_security_packet,
@@ -637,8 +599,6 @@ RSpec.describe Learnosity::Sdk::Request::Init do
       )
       req = init.generate(false)
       expect(req['meta']).not_to be_nil
-
-      Learnosity::Sdk::Request::Init.enable_telemetry
     end
 
     it 'does not affect existing meta symbol when telemetry is disabled' do
@@ -646,8 +606,6 @@ RSpec.describe Learnosity::Sdk::Request::Init do
         :test => 123,
         :test2 => 456
       }
-
-      Learnosity::Sdk::Request::Init.disable_telemetry
 
       init = Learnosity::Sdk::Request::Init.new(
         'questions',
@@ -657,8 +615,6 @@ RSpec.describe Learnosity::Sdk::Request::Init do
       )
       req = init.generate(false)
       expect(req[:meta]).not_to be_nil
-
-      Learnosity::Sdk::Request::Init.enable_telemetry
     end
   end
 end

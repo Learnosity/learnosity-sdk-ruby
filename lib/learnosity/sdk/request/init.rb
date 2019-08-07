@@ -14,18 +14,6 @@ module Learnosity
         # XXX: Needs to be public for unit tests
         attr_reader :security_packet, :request_string
 
-        class <<self
-          attr_accessor :telemetry_enabled
-        end
-
-        def self.enable_telemetry
-          @@telemetry_enabled = true
-        end
-
-        def self.disable_telemetry
-          @@telemetry_enabled = false
-        end
-
         # Keynames that are valid in the security_packet, they are also in
         # the correct order for signature generation.
         @@valid_security_keys = ['consumer_key', 'domain', 'timestamp', 'expires', 'user_id'];
@@ -35,6 +23,14 @@ module Learnosity
 
         # Determines if telemetry is enabled
         @@telemetry_enabled = true
+
+        def self.enable_telemetry
+          @@telemetry_enabled = true
+        end
+
+        def self.disable_telemetry
+          @@telemetry_enabled = false
+        end
 
         def initialize(service, security_packet, secret, request_packet = nil, action = nil)
           @sign_request_data = false
@@ -91,12 +87,15 @@ module Learnosity
             case @service
             when 'data'
               data_output = { 'security' => JSON.generate(output['security']) }
+
               if output.key?('request')
                 data_output['request'] = JSON.generate(output['request'])
               end
+
               unless @action.nil?
                 data_output['action'] = @action
               end
+
               return data_output
 
             when 'assess'
@@ -105,6 +104,7 @@ module Learnosity
 
           when 'questions'
             output = hash_except(@security_packet, 'domain')
+
             unless @request_packet.nil?
               output = output.merge(@request_packet)
             end
@@ -119,6 +119,7 @@ module Learnosity
           unless encode
             return output
           end
+
           JSON.generate(output)
         end
 
@@ -127,35 +128,42 @@ module Learnosity
         attr_accessor :service, :secret, :request_packet, :action, :sign_request_data
         attr_writer :security_packet, :request_string
 
+        def get_platform
+          if Sys::Platform.linux?
+            'linux'
+          elsif Sys::Platform.windows?
+            'win'
+          elsif Sys::Platform.mac?
+            'darwin'
+          else
+            Sys::Uname.platform
+          end
+        end
+
         def add_meta
           if @request_packet.nil?
             @request_packet = {}
-          end
-
-          if Sys::Platform.linux?
-            platform = 'linux'
-          elsif Sys::Platform.windows?
-            platform = 'win'
-          elsif Sys::Platform.mac?
-            platform = 'darwin'
-          else
-            platform = Sys::Uname.platform
           end
 
           sdk_metrics = {
             :version => VERSION,
             :lang => 'ruby',
             :lang_version => RUBY_VERSION,
-            :platform => platform,
+            :platform => get_platform,
             :platform_version => Sys::Uname.release
           }
 
           if @request_packet.include? 'meta'
+            @request_packet['meta'].delete('sdk') if @request_packet['meta'].include? 'sdk'
+
             @request_packet['meta'][:sdk] = sdk_metrics
           elsif @request_packet.include? :meta
+            @request_packet[:meta].delete('sdk') if @request_packet[:meta].include? 'sdk'
+
             @request_packet[:meta][:sdk] = sdk_metrics
           else
             @request_packet[:meta] = {}
+
             @request_packet[:meta][:sdk] = sdk_metrics
           end
         end
@@ -262,7 +270,7 @@ module Learnosity
         end
 
         def hash_value(value)
-		      Digest::SHA256.hexdigest value
+          Digest::SHA256.hexdigest value
         end
 
         def hash_signature(signature_array)
