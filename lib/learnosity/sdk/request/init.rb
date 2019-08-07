@@ -3,6 +3,8 @@ require 'json'
 
 require 'learnosity/sdk/exceptions'
 require 'learnosity/sdk/utils'
+require 'learnosity/sdk/version'
+require 'sys/uname'
 
 module Learnosity
   module Sdk
@@ -10,7 +12,19 @@ module Learnosity
 
       class Init
         # XXX: Needs to be public for unit tests
-        attr_reader :security_packet, :request_string, :is_telemetry_enabled
+        attr_reader :security_packet, :request_string
+
+        class <<self
+          attr_accessor :telemetry_enabled
+        end
+
+        def self.enable_telemetry
+          @@telemetry_enabled = true
+        end
+
+        def self.disable_telemetry
+          @@telemetry_enabled = false
+        end
 
         # Keynames that are valid in the security_packet, they are also in
         # the correct order for signature generation.
@@ -20,7 +34,7 @@ module Learnosity
         @@valid_services = ['assess', 'author', 'data', 'events', 'items', 'questions', 'reports'];
 
         # Determines if telemetry is enabled
-        @@is_telemetry_enabled = true
+        @@telemetry_enabled = true
 
         def initialize(service, security_packet, secret, request_packet = nil, action = nil)
           @sign_request_data = false
@@ -31,6 +45,11 @@ module Learnosity
           @action = action
 
           validate
+
+          if @@telemetry_enabled
+            add_meta
+          end
+
           set_service_options
 
           @request_string = generate_request_string
@@ -107,6 +126,39 @@ module Learnosity
 
         attr_accessor :service, :secret, :request_packet, :action, :sign_request_data
         attr_writer :security_packet, :request_string
+
+        def add_meta
+          if @request_packet.nil?
+            @request_packet = {}
+          end
+
+          if Sys::Platform.linux?
+            platform = 'linux'
+          elsif Sys::Platform.windows?
+            platform = 'win'
+          elsif Sys::Platform.mac?
+            platform = 'darwin'
+          else
+            platform = Sys::Uname.platform
+          end
+
+          sdk_metrics = {
+            :version => VERSION,
+            :lang => 'ruby',
+            :lang_version => RUBY_VERSION,
+            :platform => platform,
+            :platform_version => Sys::Uname.release
+          }
+
+          if @request_packet.include? 'meta'
+            @request_packet['meta'][:sdk] = sdk_metrics
+          elsif @request_packet.include? :meta
+            @request_packet[:meta][:sdk] = sdk_metrics
+          else
+            @request_packet[:meta] = {}
+            @request_packet[:meta][:sdk] = sdk_metrics
+          end
+        end
 
         def validate
           if @service.nil?
