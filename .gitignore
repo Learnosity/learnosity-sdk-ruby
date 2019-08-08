@@ -1,3 +1,5 @@
+.idea/
+.rakeTasks
 /.bundle/
 /.yardoc
 /_yardoc/
@@ -6,6 +8,8 @@
 /pkg/
 /spec/reports/
 /tmp/
+
+/examples/lrn-sdk-rails/Gemfile.lock
 
 # rspec failure tracking
 .rspec_status

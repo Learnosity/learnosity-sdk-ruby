@@ -268,7 +268,19 @@ Just run
 
     rake spec
 
-to exercise the testsuite
+to exercise the testsuite.
+
+##Tracking
+
+In version v0.2.0, we introduced code to track the following information by adding it to the request being signed:
+
+    SDK version
+    SDK language
+    SDK language version
+    Host platform (OS)
+    Platform version
+
+We use this data to enable better support and feature planning. All subsequent versions of the SDK shall include this usage tracking.
 
 
 [author-api-doc]: https://docs.learnosity.com/authoring/author
