@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    learnosity-sdk (0.1.0)
+    learnosity-sdk (0.2.0)
       sys-uname (~> 1.0)
 
 GEM
