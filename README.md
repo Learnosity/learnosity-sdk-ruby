@@ -270,7 +270,7 @@ Just run
 
 to exercise the testsuite.
 
-##Tracking
+## Tracking
 
 In version v0.2.0, we introduced code to track the following information by adding it to the request being signed:
 
