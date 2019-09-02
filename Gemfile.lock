@@ -23,7 +23,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
-    sys-uname (1.0.4)
+    sys-uname (1.1.0)
       ffi (>= 1.0.0)
 
 PLATFORMS
