@@ -6,3 +6,8 @@ rvm:
   - 2.5
   - 2.6
 before_install: gem install bundler -v 2.0.2
+
+notifications:
+  slack:
+    rooms:
+      secure: Yt+hj5JObFI/yHvrWMsBM/jOHhiMtkISEkb1Zw/9VulNdjvP5mYcQ+9AI79HsWClS05qvs59BkU7rbEITO30Gjeuk4AYfUqvXbDF7urMAZK6mNhIz+kOWrUGMNvYOvQ2zoW9gLQMVyI7w2QVeanGlYcXzoLpXu1yTnpOOedldU25ur7qK4K/on+syL931g+HBnrYUN8tHL5Rj+c41syPRp/biE6p+3F403jEm/pLpzmo+PhP5Gc6jEsmwt+wStAe5ldrnvJ5iGcVpn/g7w6i1lOPZL7lpje0KlVrCkP+biklmg2jR4WgvDsPwxHJZ4vXGRxIKoX1wiXrk9kL/fOyz30TP1txMD6K9ja8nnpgk0RW8mcJOnUuoLN1p/FRt5R1D5cJV/eeh6veRxTha3nO/Kbcy5sBjwe3douDAVdJJGPchq3WgXkkx1q682/WztyZ6cEjteZpKYzrjIqHkPqDojuyV1kkp819DTty7U9OTf899od6+z0kP6+KnR5HnqiLHXpRCaLKEk/ggEJpu1z9VMK8Yfp5MKMTU0nREz6nFZQBhSPOe+laBeOty84YRge6ny8FYARmTvKZ5UgOxGXCqV5lYT6sg+E3Sep0WmKYeyve/ss8EGR04oEpJ0ZyDpQxDgjeCbJb1EE3F9crQGpyssHteVx8++HyEyG3uQCvq9A=
