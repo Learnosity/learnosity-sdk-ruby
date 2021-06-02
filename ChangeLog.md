@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Improved Makefile and tests
 - PR template
 
+### Security
+- Updated vendor libraries to fix security issues
+
 ## [v0.2.1] - 2019-01-08
 ### Added
 
