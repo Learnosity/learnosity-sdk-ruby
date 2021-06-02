@@ -29,7 +29,7 @@ You can build and install the SDK directly from a Git clone, with
     cd learnosity-sdk-ruby/
     bundle install
     rake build
-    gem install --user-install pkg/learnosity-sdk-0.2.1.gem
+    gem install --user-install pkg/learnosity-sdk-0.2.2.gem
 
 If `bundle` is missing, you can install it with
 
