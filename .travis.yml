@@ -5,7 +5,10 @@ rvm:
   - 2.4
   - 2.5
   - 2.6
-before_install: gem install bundler -v 1.14.6
+before_install:
+  # Login to docker hub
+  - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+  - gem install bundler -v 1.14.6
 
 notifications:
   slack:
