@@ -1,0 +1,16 @@
+services:
+  ruby:
+    image: "ruby:${RUBY_VERSION}"
+    working_dir: /srv/sdk/ruby
+    environment:
+      - GEM_HOME=/srv/gems
+      - GEM_PATH=/srv/gems:/usr/local/lib/ruby/gems/${RUBY_VERSION}.0
+      - ENV
+      - REGION
+      - VER
+    volumes:
+      - ..:/srv/sdk/ruby:z,delegated
+      - repo:/srv/gems
+
+volumes:
+  repo:
