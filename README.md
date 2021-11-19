@@ -303,7 +303,7 @@ Add the HTML/Javascript boilerplate to the view, `app/views/index/index.html.erb
 
 Finally, you can serve the project with
 
-    rails serve
+    rails server
 
 
 It will become available at http://localhost:3000/index/index
