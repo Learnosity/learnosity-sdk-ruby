@@ -3,7 +3,7 @@
 [![Gem Version](https://badge.fury.io/rb/learnosity-sdk.svg)](https://badge.fury.io/rb/learnosity-sdk) [![Build
 Status](https://travis-ci.org/Learnosity/learnosity-sdk-ruby.svg?branch=master)](https://travis-ci.org/Learnosity/learnosity-sdk-ruby)
 
-This gem allows to ease integration with the following Learnosity APIs,
+This gem allows to ease integration with the following Learnosity APIs:
 
 - Author API [author-api-doc]
 - Assess API [assess-api-doc]
@@ -12,6 +12,9 @@ This gem allows to ease integration with the following Learnosity APIs,
 - Items API [items-api-doc]
 - Questions API [questions-api-doc]
 - Report API [report-api-doc]
+
+We support the Ruby versions listed here that are not `eol`
+https://www.ruby-lang.org/en/downloads/branches/
 
 ## Installation
 
@@ -136,8 +139,6 @@ Net::HTTP.post_form URI('https://data.learnosity.com/v1/itembank/items'), reques
 ```
 
 ### Recursive Queries
-
-tl;dr: not currently implemented
 
 Some requests are paginated to the `limit` passed in the request, or some
 server-side default. Responses to those requests contain a `next` parameter in
