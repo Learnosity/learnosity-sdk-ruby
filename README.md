@@ -4,7 +4,7 @@
 (Prefer another language? <a href="https://help.learnosity.com/hc/en-us/sections/360000194318-Server-side-development-SDKs">Click here</a>)<br>
 An official Learnosity open-source project.</p>
 
-[![Latest Stable Version](https://badge.fury.io/gh/Learnosity%2Flearnosity-sdk-ruby.svg)](https://pypi.org/project/learnosity_sdk/ ## LINK TO GEM PACKAGE PAGE? )
+[![Latest Stable Version](https://badge.fury.io/gh/Learnosity%2Flearnosity-sdk-ruby.svg)](https://rubygems.org/gems/learnosity-sdk)
 [![Build Status](https://travis-ci.org/Learnosity/learnosity-sdk-ruby.svg?branch=master)](https://app.travis-ci.com/github/Learnosity/learnosity-sdk-ruby)
 [![License](docs/images/apache-license.svg)](LICENSE.md)
 [![Downloads](docs/images/downloads.svg)](https://github.com/Learnosity/learnosity-sdk-ruby/releases)
@@ -45,368 +45,45 @@ There's more features, besides. See the detailed list of SDK features on the [re
 
 [(Back to top)](#table-of-contents)
 
-
-# Learnosity SDK - Ruby
-
-[![Gem Version](https://badge.fury.io/rb/learnosity-sdk.svg)](https://badge.fury.io/rb/learnosity-sdk) [![Build
-Status](https://travis-ci.org/Learnosity/learnosity-sdk-ruby.svg?branch=master)](https://travis-ci.org/Learnosity/learnosity-sdk-ruby)
-
-This gem allows to ease integration with the following Learnosity APIs,
-
-- Author API [author-api-doc]
-- Assess API [assess-api-doc]
-- Data API [data-api-doc]
-- Events API [events-api-doc]
-- Items API [items-api-doc]
-- Questions API [questions-api-doc]
-- Report API [report-api-doc]
-
-## Installation
-
-### Ruby Gem
-
-The SDK should be available from RubyGems [learnosity-sdk-rubygems]
-
-    gem install learnosity-sdk
-
-### git clone
-
-You can build and install the SDK directly from a Git clone, with
-
-    git clone https://github.com/Learnosity/learnosity-sdk-ruby/
-    cd learnosity-sdk-ruby/
-    bundle install
-    rake build
-    gem install --user-install pkg/learnosity-sdk-0.2.1.gem
-
-If `bundle` is missing, you can install it with
-
-    gem install --user-install bundler
-
-## Usage
-
-Some usage examples can be found in the `examples/` subdirectory.
-
-### Init
-
-This class generates and signs init options for all supported APIs. Its
-constructor takes four mandatory arguments, and one optional argument.
-
-- `service`: the name of the API to sign initialisation options for,
-- `security_packet`: a hash with at least the `consumer_key`, optionally the
-  `domain` and `timestamp`; `user_id` is also mandatory for Questions API,
-- `consumer_secret`
-- `request`: the request you want to get a signature for
-- `action` [Data API only]: the action of your request, either `get` or `post`
-
-The `Init#generate` method can then be used to generate the options. By default,
-it will generate a JSON string. It however takes one parameter, `encode` which,
-if false, will simply return a native Ruby Hash with the signed options.
-
-Given your consumer key and secret, and the request you want to run against,
-say, the `items` API, you just need to instantiate the
-`Learnosity::Sdk::Request::Init`, and call its `generate` method.
-
-```ruby
-require "learnosity/sdk/request/init"
-
-security_packet = {
-	# XXX: This is a Learnosity Demos consumer; replace it with your own consumer key
-	'consumer_key'   => 'yis0TYCu7U9V4o7M',
-	'domain'         => 'localhost'
-}
-# XXX: The consumer secret should be in a properly secured credential store, and *NEVER* checked in in revision control
-consumer_secret = '74c5fd430cf1242a527f6223aebd42d30464be22'
-items_request = { 'limit' => 50 }
-
-init = Learnosity::Sdk::Request::Init.new(
-        'items',
-        security_packet,
-        consumer_secret,
-        items_request
-)
-
-puts init.generate
-```
-
-This will return a string of signed options suitable for initialisation of
-the API.
-
-```html
-<html>
-    <head>
-    </head>
-
-    <body>
-	    <script src="//items.learnosity.com/"></script>
-
-	    <script>
-	    var itemsApp = LearnosityItems.init(INSERT OPTIONS HERE);
-	    </script>
-
-    </body>
-</html>
-```
-
-### Data API
-
-When the `service` parameter is `data`, the `action` parameter is mandatory.
-Moreover, `Init#generate`'s `encode` parameter is ignored, and a native Ruby Hash
-with the signed options is unconditionally returned, for use with your favourite
-HTTP library (note that, regardless of the `action` parameter, you should always
-send `POST` requests).
-
-```ruby
-require 'net/http'
-require "learnosity/sdk/request/init"
-
-
-security_packet = {
-	# XXX: This is a Learnosity Demos consumer; replace it with your own consumer key
-	'consumer_key'   => 'yis0TYCu7U9V4o7M',
-	'domain'         => 'localhost'
-}
-# XXX: The consumer secret should be in a properly secured credential store, and *NEVER* checked in in revision control
-consumer_secret = '74c5fd430cf1242a527f6223aebd42d30464be22'
-data_request = { 'limit' => 50 }
-
-init = Learnosity::Sdk::Request::Init.new(
-        'data',
-        security_packet,
-        consumer_secret,
-        data_request,
-	'get'
-)
-
-request = init.generate
-
-Net::HTTP.post_form URI('https://data.learnosity.com/v1/itembank/items'), request
-```
-
-### Recursive Queries
-
-tl;dr: not currently implemented
-
-Some requests are paginated to the `limit` passed in the request, or some
-server-side default. Responses to those requests contain a `next` parameter in
-their `meta` property, which can be placed in the next request to access another
-page of data.
-
-For the time being, you can iterate through pages by looping over the
-`Init#new`/`Init#generate`/`Net::HTTP#post_form`, updating the `next` attribute
-in the request.
-
-```ruby
-response = JSON.parse(res.body)
-if ( !response['meta']['next'].nil? \
-		and !response['meta']['records'].nil? and response['meta']['records'] > 0)
-	data_request['next'] = response['meta']['next']
-end
-```
-
-This will `require 'json'` to be able to parse the response.
-
-See `examples/simple/init_data.rb` for an example.
-
-### Generating UUIDs
-
-You will likely have to generate UUIDs. You can use the Ruby `securerandom`
-module for this purpose.
-
-```ruby
-require 'securerandom'
-
-p SecureRandom.uuid
-```
-
-### Rails
-
-You can bootstrap a Ruby-on-Rails project using this SDK by doing the
-following.
-
-Note, this is a quick 0 to 100 in 10s examples of how to use this
-SDK with Rails. As such, it takes many unwise shortcuts in the architecture of
-the app; do not take this as the example of a good Rails app.
-
-First, generate a skeleton project
-
-    rails new lrn-sdk-rails
-    cd lrn-sdk-rails
-
-Add the `learnosity-sdk` as a dependency to this project
-
-    echo "gem 'learnosity-sdk' >> Gemfile
-    bundle install
-
-Create a default controller
-
-    rails generate controller Index index
-
-Add the `require` for the SDK at the top of the newly created controller,
-`app/controllers/index_controller.rb`, and insert the assessment configuration
-there (taken from [items-api-demo], and truncated for legibility).
-
-```ruby
-require 'learnosity/sdk/request/init'
-
-class IndexController < ApplicationController
-  @@security_packet = {
-    # XXX: This is a Learnosity Demos consumer; replace it with your own consumer key
-    'consumer_key'   => 'yis0TYCu7U9V4o7M',
-    'domain'         => 'localhost'
-  }
-  # XXX: The consumer secret should be in a properly secured credential store, and *NEVER* checked in in revision control
-  @@consumer_secret = '74c5fd430cf1242a527f6223aebd42d30464be22'
-  @@items_request = {
-	[...]
-  }
-
-  def index
-    init = Learnosity::Sdk::Request::Init.new(
-      'items',
-      @@security_packet,
-      @@consumer_secret,
-      @@items_request
-    )
-  end
-end
-```
-
-Add the HTML/Javascript boilerplate to the view, `app/views/index/index.html.erb`
-
-```erb
-<h1>Index#index</h1>
-
-<div id="learnosity_assess"></div>
-
-<script src="//items.learnosity.com"></script>
-<script>
-  var eventOptions = {
-    readyListener: init
-  },
-    itemsApp = LearnosityItems.init(<%= raw(@init.generate) %>);
-
-  function init () {
-    var assessApp = itemsApp.assessApp();
-
-
-    assessApp.on('item:load', function () {
-      console.log('Active item:', getActiveItem(this.getItems()));
-    });
-
-    assessApp.on('test:submit:success', function () {
-      toggleModalClass();
-    });
-  }
-</script>
-```
-
-Finally, you can serve the project with
-
-    rails server
-
-
-It will become available at http://localhost:3000/index/index
-
-For reference you can find the result of these steps in
-`examples/lrn-sdk-rails`.
-
-## Testing
-
-Just run
-
-    rake spec
-
-to exercise the testsuite.
-
-## Tracking
-
-In version v0.2.0, we introduced code to track the following information by adding it to the request being signed:
-
-- SDK version
-- SDK language
-- SDK language version
-- Host platform (OS)
-- Platform version
-
-We use this data to enable better support and feature planning. All subsequent versions of the SDK shall include this usage tracking.
-
-[author-api-doc]: https://docs.learnosity.com/authoring/author
-[assess-api-doc]: https://docs.learnosity.com/assessment/assess
-[data-api-doc]: https://docs.learnosity.com/analytics/data
-[events-api-doc]: https://docs.learnosity.com/analytics/events
-[items-api-doc]: https://docs.learnosity.com/assessment/items
-[questions-api-doc]: https://docs.learnosity.com/assessment/questions
-[report-api-doc]: https://docs.learnosity.com/analytics/report
-[learnosity-sdk-rubygems]: https://rubygems.org/gems/learnosity-sdk
-[items-api-demo]: http://demos.learnosity.com/assessment/items/itemsapi_assess.php
-
-OLD /\
-NEW \/
-
-
-
 ## Requirements
-1. Runtime libraries for Python 3 installed. ([instructions](https://www.python.org/downloads/))
+1. Runtime libraries for Ruby installed. ([instructions](https://www.ruby.org/downloads/))
 
-2. The [Pip](https://pip.pypa.io/en/latest/) package manager installed. You use Pip to access the Learnosity Python SDK on [Pypi](https://pypi.org/) (the [Python Package Index](https://pypi.org/)).
+2. The [Gem]() package manager installed. You use Gem to access the Learnosity Ruby SDK on [RubyGems](https://pypi.org/).
 
-3. The [Jinja](https://jinja.palletsprojects.com/)** templating library. For the tutorial on this page, you will also need [Jinja](https://jinja.palletsprojects.com/) installed. Jinja helps in rendering HTML templates, and importing Python variables into web pages. It's not actually a requirement of the SDK itself, so if your app doesn't use Jinja, no need to install it. **  Jinja is only required for the tutorial on this page.
+Not using Ruby? See the [SDKs for other languages](https://help.learnosity.com/hc/en-us/sections/360000194318-Server-side-development-SDKs).
 
-Not using Python? See the [SDKs for other languages](https://help.learnosity.com/hc/en-us/sections/360000194318-Server-side-development-SDKs).
+### Supported Ruby Versions
+The following Ruby versions are tested and supported:
 
-### Supported Python Versions
-The following Python versions are tested and supported:
-
-* 3.6.x
-* 3.5.x
-* 3.4.x
-* 3.3.x
+* Ruby 3.0.2 ??? (are we testing for this? What can we recommend here?)
+* Ruby 2.7.4 ??? (are we testing for this? What can we recommend here?)
 
 [(Back to top)](#table-of-contents)
 
 ## Installation
-###  **Installation via Pip**
-Using Pip is the recommended way to install the Learnosity SDK for Python in production. The easiest way is to run this from your parent project folder:
+###  **Installation via RubyGems**
+Using RubyGems is the recommended way to install the Learnosity SDK for Ruby in production. The easiest way is to run this from your project folder:
 
-    pip install learnosity_sdk
-
-Then, if you're following the tutorial on this page, also run:
-
-    pip install Jinja2
-
-*Note*:  Jinja is only required for the tutorial on this page.
+    gem install learnosity_sdk
 
 ### **Alternative method 1: download the zip file**
-Download the latest version of the SDK as a self-contained ZIP file from the [GitHub Releases](https://github.com/Learnosity/learnosity-sdk-python/releases) page. The distribution ZIP file contains all the necessary dependencies. 
+Download the latest version of the SDK as a self-contained ZIP file from the [GitHub Releases](https://github.com/Learnosity/learnosity-sdk-ruby/releases) page. The distribution ZIP file contains all the necessary dependencies. 
 
 Note: after installation, run this command in the SDK root folder:
 
-    pip install .
-
-Then, if you're following the tutorial on this page, also run:
-
-    pip install Jinja2
-
-*Note*:  Jinja is only required for the tutorial on this page.
+    bundle install
 
 ### **Alternative 2: development install from a git clone**
 To install from the terminal, run this command:
 
-    git clone git@github.com:Learnosity/learnosity-sdk-python.git
+    git clone git@github.com:Learnosity/learnosity-sdk-Ruby.git
 
 Note: after installation, run this command in the SDK root folder:
 
-    pip install .
-
-Then, if you're following the tutorial on this page, also run:
-
-    pip install Jinja2
-
-*Note*:  Jinja is only required for the tutorial on this page.
+    bundle install
 
 Note that these manual installation methods are for development and testing only.
-For production use, you should install the SDK using the Pip package manager for Python, as described above.
+For production use, you should install the SDK using the Pip package manager for Ruby, as described above.
 
 [(Back to top)](#table-of-contents)
 
@@ -414,23 +91,17 @@ For production use, you should install the SDK using the Pip package manager for
 Let's take a look at a simple example of the SDK in action. In this example, we'll load an assessment into the browser.
 
 ### **Start up your web server and view the standalone assessment example**
-To start up your Python web server, first find the following folder location under the SDK. Change directory ('cd') to this location on the command line.
+To start up your Ruby web server, first find the following folder location under the SDK. Change directory ('cd') to this location on the command line.
 
-If installed under Pypi, and your Python version is 3.9 (for example), you should navigate to this location:
-
-    .../usr/local/lib/python3.9/site-packages/learnosity_sdk/docs/quickstart/assessment/
-
-If downloaded via another method, navigate to this location:
-
-    .../learnosity-sdk-python/docs/quickstart/assessment/
+    learnosity-sdk-ruby/examples/lrn-sdk-rails/
 
 To start, run this command from that folder:
 
-    python3 standalone-assessment.py
+    rails server
 
-From this point on, we'll assume that your web server is available at this local address (it will report the port being used when you launch it, by default it's port 8000): 
+From this point on, we'll assume that your web server is available at this local address (it will report the port being used when you launch it, by default it's port 3000): 
 
-http://localhost:8000/
+http://localhost:3000/index/index
 
 The page will load. This is a basic example of an assessment loaded into a web page with Learnosity's assessment player. You can interact with this demo assessment to try out the various Question types.
 
@@ -441,41 +112,35 @@ The page will load. This is a basic example of an assessment loaded into a web p
 ### **How it works**
 Let's walk through the code for this standalone assessment example. The source file is included under the quickstart folder, in this location:
 
-    /learnosity-sdk-python/docs/quickstart/assessment/standalone-assessment.py
+EXPECTED:    /learnosity-sdk-ruby/docs/quickstart/assessment/standalone-assessment.rb?
+NEW?    /learnosity-sdk-ruby/examples/lrn-sdk-rails/app/controllers/index_controller.rb?
 
-The first section of code is Python and is executed server-side. It constructs a set of configuration options for Items API, and securely signs them using the consumer key. The second section is HTML and JavaScript and is executed client-side, once the page is loaded in the browser. It renders and runs the assessment functionality.
+The first section of code is a controller file in Ruby, ([index_controller.rb]) and it is executed server-side. It constructs a set of configuration options for Items API, and securely signs them using the consumer key. We also add a few lines to ([application.rb]) for configuration. The second section is HTML and JavaScript in an [ERB](https://docs.ruby-lang.org/en/2.3.0/ERB.html) template ([index.html.erb]) and is executed client-side, once the page is loaded in the browser. It renders and runs the assessment functionality.
 
 [(Back to top)](#table-of-contents)
 
 ### **Server-side code**
 We start by including some LearnositySDK helpers - they'll make it easy to generate and sign the config options, and unique user and session IDs.
 
-``` python
-from learnosity_sdk.request import Init # Learnosity helper.
-from learnosity_sdk.utils import Uuid   # Learnosity helper.
+``` ruby
+require 'learnosity/sdk/request/init' # Learnosity helper.
+require 'securerandom'                # Library for generating UUIDs.
 ```
 
-We also specify a few libraries to run a minimal web server, for the purposes of this example.
+Now we'll declare the configuration options for Items API. The following options specify which assessment content should be rendered, how it should be displayed, which user is taking this assessment and how their responses should be stored. 
 
-``` python
-from http.server import BaseHTTPRequestHandler, HTTPServer # Python web server.
-import time                             # Time library, for the Python web server.
-from jinja2 import Template             # Jinja template library - pulls data into web pages.
-```
-
-Now we'll declare the configuration options for Items API. These specify which assessment content should be rendered, how it should be displayed, which user is taking this assessment and how their responses should be stored. 
-
-``` python
-items_request = items_request = {
-    "user_id": user_id,
-    "activity_template_id": "quickstart_examples_activity_template_001",
-    "session_id": session_id,
-    "activity_id": "quickstart_examples_activity_001",
-    "rendering_type": "assess",
-    "type": "submit_practice",
-    "name": "Items API Quickstart",
-    "state": "initial"
-}
+``` ruby
+class IndexController < ApplicationController
+    @@items_request = {
+        "user_id" => SecureRandom.uuid,
+        "activity_template_id" => "quickstart_examples_activity_template_001",
+        "session_id" => SecureRandom.uuid,
+        "activity_id" => "quickstart_examples_activity_001",
+        "rendering_type" => "assess",
+        "type" => "submit_practice",
+        "name" => "Items API Quickstart",
+        "state" => "initial"
+  }
 ```
 
 * `user_id`: unique student identifier. Note: we never send or save student's names or other personally identifiable information in these requests. The unique identifier should be used to look up the entry in a database of students accessible within your system only. [Learn more](https://help.learnosity.com/hc/en-us/articles/360002309578-Student-Privacy-and-Personally-Identifiable-Information-PII-).
@@ -487,58 +152,83 @@ items_request = items_request = {
 * `name`: human-friendly display name to be shown in reporting, via Reports API and Data API.
 * `state`: Optional. Can be set to `initial`, `resume` or `review`. `initial` is the default.
 
-**Note**: you can submit the configuration options either as a Python array as shown above, or a JSON string.
+**Note**: you can submit the configuration options either as an array as shown above, or a JSON string.
 
-Next, we declare the Learnosity consumer credentials we'll use to authorize this request. We also construct security settings that ensure the report is initialized on the intended domain. The value provided to the domain property must match the domain from which the file is actually served. The consumer key and consumer secret in this example are for Learnosity's public "demos" account. Once Learnosity provides your own consumer credentials, your Item bank and assessment data will be tied to your own consumer key and secret.
+Next, we declare the Learnosity consumer credentials we'll use to authorize this request. 
 
-``` python
-security = {
-    'consumer_key': 'yis0TYCu7U9V4o7M',
-    'domain': 'localhost',
-}
-consumerSecret = '74c5fd430cf1242a527f6223aebd42d30464be22'
+We'll now open the file [application.rb], under [/lrn-sdk-rails/config] to set our Learnosity login credentials. Notice the two values *config.consumer_key* and *config.consumer_secret*.
+
+``` ruby
+require 'rails/all'
+# Require the gems listed in Gemfile, including any gems
+# you've limited to :test, :development, or :production.
+Bundler.require(*Rails.groups)
+
+module LrnSdkRails
+  class Application < Rails::Application
+    # Settings in config/environments/* take precedence over those specified here.
+    # Application configuration should go into files in config/initializers
+    # -- all .rb files in that directory are automatically loaded.
+    config.consumer_key = 'yis0TYCu7U9V4o7M'
+    config.consumer_secret = '74c5fd430cf1242a527f6223aebd42d30464be22'
+  end
+end
 ```
 
+The consumer key and consumer secret in this example are for Learnosity's public "demos" account. Once Learnosity provides your own consumer credentials, your Item bank and assessment data will be tied to your own consumer key and secret.
 <i>(of course, you should never normally put passwords into version control)</i>
 
-Now we call LearnositySDK's `Init()` helper to construct our Items API configuration parameters, and sign them securely with the `security`, `request` and `consumerSecret` parameters. `init.generate()` returns us a JSON blob of signed configuration parameters.
+Now, back in [index_controller.rb], we reference the key and secret, and also construct security settings that ensure the report is initialized on the intended domain. The value provided to the domain property must match the domain from which the file is actually served.
 
-``` python
-init = Init(
-    'items', security, consumerSecret,
-    request=items_request
-)
-generatedRequest = init.generate()
+``` ruby
+    @@security_packet = {
+        # XXX: This is a Learnosity Demos consumer; replace it with your own consumer key
+        'consumer_key'   => Rails.configuration.consumer_key,
+        'domain'         => 'localhost'
+    }
+    # XXX: The consumer secret should be in a properly secured credential store, and *NEVER* checked into version control
+    @@consumer_secret = Rails.configuration.consumer_secret
+```
+
+Now we call LearnositySDK's `Init()` helper to construct our Items API configuration parameters, and sign them securely with the `security_packet`, `consumerSecret` and `items_request` parameters. 
+
+``` ruby
+  def index
+    @init = Learnosity::Sdk::Request::Init.new(
+      'items',
+      @@security_packet,
+      @@consumer_secret,
+      @@items_request
+    )
+  end
 ```
 
 [(Back to top)](#table-of-contents)
 
 ### **Web page content**
-We've got our set of signed configuration parameters, so now we can set up our page content for output. The page can be as simple or as complex as needed, using your own HTML, JavaScript and your frameworks of choice to render the desired product experience.
+We've got our set of signed configuration parameters, so now we can set up our page content for output. The page can be as simple or as complex as needed, using your own HTML and JavaScript to render the desired product experience.
 
-This example uses plain HTML in a Jinja template, served by the built-in Python web server. However, the Jinja template used here can be easily re-used in another framework, for example Python Flask or Django.
+This example uses plain HTML in an ERB template, served by Rails. 
 
-The following example HTML/Jinja template can be found near the bottom of the `standalone-assessment.py` file.
-
-``` python
-        template = Template("""<!DOCTYPE html>
-        <html>
-            <head>
-                <link rel="stylesheet" type="text/css" href="../css/style.css">
-            </head>
-            <body>
-                <h1>{{ name }}</title></h1>
-                <!-- Items API will render the assessment app into this div. -->
-                <div id="learnosity_assess"></div>
-                <!-- Load the Items API library. -->
-                <script src=\"https://items.learnosity.com/?v2021.2.LTS/\"></script>
-                <!-- Initiate Items API assessment rendering, using the signed parameters. -->
-                <script>
-                    var itemsApp = LearnosityItems.init( {{ generatedRequest }} );
-                </script>
-            </body>
-        </html>
-        """)
+``` html
+<h1>Standalone Assessment Example</h1>
+<div id="learnosity_assess"></div>
+<script src="//items.learnosity.com?v2021.2.LTS"></script>
+<script>
+  var eventOptions = {
+    readyListener: init
+  },
+    itemsApp = LearnosityItems.init(<%= raw @init.generate %>);
+  function init () {
+    var assessApp = itemsApp.assessApp();
+    assessApp.on('item:load', function () {
+      console.log('Active item:', getActiveItem(this.getItems()));
+    });
+    assessApp.on('test:submit:success', function () {
+      toggleModalClass();
+    });
+  }
+</script>
 ```
 
 The important parts to be aware of in this HTML are:
@@ -546,19 +236,11 @@ The important parts to be aware of in this HTML are:
 * A div with `id="learnosity_assess"`. This is where the Learnosity assessment player will be rendered to deliver the assessment.
 * The `<script src="https://items.learnosity.com/?v2021.2.LTS"></script>` tag, which includes Learnosity's Items API on the page and makes the global `LearnosityItems` object available. The version specified as `v2021.2.LTS` will retrieve that specific [Long Term Support (LTS) version](https://help.learnosity.com/hc/en-us/articles/360001268538-Release-Cadence-and-Version-Lifecycle). In production, you should always pin to a specific LTS version to ensure version compatibility.
 * The call to `LearnosityItems.init()`, which initiates Items API to inject the assessment player into the page.
-* The variable `{{generatedRequest}}` dynamically sends the contents of our init options to JavaScript, so it can be passed to `init()`.
+* The variable `<%= raw @init.generate %>` dynamically sends the contents of our init options to JavaScript, so it can be passed to `init()`.
 
-The call to `init()` returns an instance of the ItemsApp, which we can use to programmatically drive the assessment using its methods. We pull in our Learnosity configuration in a variable `{{ generatedRequest }}`, that the Jinja template will import from the Python program. The variable `{{ name }}` is the page title which can be set in the same way.
+The call to `init()` returns an instance of the ItemsApp, which we can use to programmatically drive the assessment using its methods. We pull in our Learnosity configuration in a variable `<%= raw @init.generate %>`, that the ERB template will import from the Ruby controller file.
 
-The Jinja template is rendered by the following line, which will bring in those variables.
-
-``` python
-self.wfile.write(bytes(template.render(name='Standalone Assessment Example', generatedRequest=generatedRequest), "utf-8"))  
-```
-
-There is some additional code in `standalone-assessment.py`, which runs Python's built-in web server. 
-
-This marks the end of the quick start guide. From here, try modifying the example files yourself, you are welcome to use this code as a basis for your own projects. As mentioned earlier, the Jinja template used here can be easily re-used in another framework, for example Python Flask or Django.
+This marks the end of the quick start guide. From here, try modifying the example files yourself, you are welcome to use this code as a basis for your own projects.
 
 Take a look at some more in-depth options and tutorials on using Learnosity assessment functionality below.
 
@@ -602,7 +284,7 @@ Contributions are welcome. See the [contributing instructions](CONTRIBUTING.md) 
 [(Back to top)](#table-of-contents)
 
 ## License
-The Learnosity Python SDK is licensed under an Apache 2.0 license. [Read more](LICENSE.md).
+The Learnosity Ruby SDK is licensed under an Apache 2.0 license. [Read more](LICENSE.md).
 
 [(Back to top)](#table-of-contents)
 
