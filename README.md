@@ -110,12 +110,9 @@ The page will load. This is a basic example of an assessment loaded into a web p
 [(Back to top)](#table-of-contents)
 
 ### **How it works**
-Let's walk through the code for this standalone assessment example. The source file is included under the quickstart folder, in this location:
+Let's walk through the code for this standalone assessment example. The source files are included under the [/example/lrn-sdk-rails/] folder.
 
-EXPECTED:    /learnosity-sdk-ruby/docs/quickstart/assessment/standalone-assessment.rb?
-NEW?    /learnosity-sdk-ruby/examples/lrn-sdk-rails/app/controllers/index_controller.rb?
-
-The first section of code is a controller file in Ruby, ([index_controller.rb]) and it is executed server-side. It constructs a set of configuration options for Items API, and securely signs them using the consumer key. We also add a few lines to ([application.rb]) for configuration. The second section is HTML and JavaScript in an [ERB](https://docs.ruby-lang.org/en/2.3.0/ERB.html) template ([index.html.erb]) and is executed client-side, once the page is loaded in the browser. It renders and runs the assessment functionality.
+The first section of code is a controller file in Ruby, ([index_controller.rb]) from [/learnosity-sdk-ruby/examples/lrn-sdk-rails/app/controllers/] and it is executed server-side. It constructs a set of configuration options for Items API, and securely signs them using the consumer key. We also add a few lines to ([application.rb]) for configuration. The second section is HTML and JavaScript in an [ERB](https://docs.ruby-lang.org/en/2.3.0/ERB.html) template ([index.html.erb]) and is executed client-side, once the page is loaded in the browser. It renders and runs the assessment functionality.
 
 [(Back to top)](#table-of-contents)
 
