@@ -28,12 +28,14 @@ say, the `items` API, you just need to instantiate the
 require "learnosity/sdk/request/init"
 
 security_packet = {
-	# XXX: This is a Learnosity Demos consumer; replace it with your own consumer key
-	'consumer_key'   => 'yis0TYCu7U9V4o7M',
+    # XXX: This is a Learnosity Demos consumer; replace it with your own consumer key. Set values in application.rb.
+    'consumer_key'   => Rails.configuration.consumer_key,
 	'domain'         => 'localhost'
 }
-# XXX: The consumer secret should be in a properly secured credential store, and *NEVER* checked in in revision control
-consumer_secret = '74c5fd430cf1242a527f6223aebd42d30464be22'
+# XXX: The consumer secret should be in a properly secured credential store, and *NEVER* checked into version control.
+# Set values in application.rb.
+consumer_secret = Rails.configuration.consumer_secret
+
 items_request = { 'limit' => 50 }
 
 init = Learnosity::Sdk::Request::Init.new(
@@ -75,12 +77,14 @@ require 'net/http'
 require "learnosity/sdk/request/init"
 
 security_packet = {
-	# XXX: This is a Learnosity Demos consumer; replace it with your own consumer key
-	'consumer_key'   => 'yis0TYCu7U9V4o7M',
+    # XXX: This is a Learnosity Demos consumer; replace it with your own consumer key. Set values in application.rb.
+    'consumer_key'   => Rails.configuration.consumer_key,
 	'domain'         => 'localhost'
 }
-# XXX: The consumer secret should be in a properly secured credential store, and *NEVER* checked in in revision control
-consumer_secret = '74c5fd430cf1242a527f6223aebd42d30464be22'
+# XXX: The consumer secret should be in a properly secured credential store, and *NEVER* checked into version control.
+# Set values in application.rb.
+consumer_secret = Rails.configuration.consumer_secret
+
 data_request = { 'limit' => 50 }
 
 init = Learnosity::Sdk::Request::Init.new(
@@ -123,7 +127,7 @@ See `examples/simple/init_data.rb` for an example.
 
 ### Generating UUIDs
 
-You will likely have to generate UUIDs. You can use the Ruby `securerandom`
+You will need to generate UUIDs. You can use the Ruby `securerandom`
 module for this purpose.
 
 ```ruby
@@ -157,19 +161,21 @@ Create a default controller
 
 Add the `require` for the SDK at the top of the newly created controller,
 `app/controllers/index_controller.rb`, and insert the assessment configuration
-there (taken from [items-api-demo], and truncated for legibility).
+there (taken from [items-api-demo], and truncated for legibility). Add the demo 
+consumer key and secret to [application.rb].
 
 ```ruby
 require 'learnosity/sdk/request/init'
 
 class IndexController < ApplicationController
   @@security_packet = {
-    # XXX: This is a Learnosity Demos consumer; replace it with your own consumer key
-    'consumer_key'   => 'yis0TYCu7U9V4o7M',
+    # XXX: This is a Learnosity Demos consumer; replace it with your own consumer key. Set values in application.rb.
+    'consumer_key'   => Rails.configuration.consumer_key,
     'domain'         => 'localhost'
   }
-  # XXX: The consumer secret should be in a properly secured credential store, and *NEVER* checked in in revision control
-  @@consumer_secret = '74c5fd430cf1242a527f6223aebd42d30464be22'
+# XXX: The consumer secret should be in a properly secured credential store, and *NEVER* checked into version control.
+# Set values in application.rb.
+consumer_secret = Rails.configuration.consumer_secret
   @@items_request = {
 	[...]
   }

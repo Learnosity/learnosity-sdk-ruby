@@ -3,7 +3,7 @@ require 'securerandom'                # Library for generating UUIDs.
 
 class IndexController < ApplicationController
   @@security_packet = {
-    # XXX: This is a Learnosity Demos consumer; replace it with your own consumer key
+    # XXX: This is a Learnosity Demos consumer; replace it with your own consumer key. Set values in application.rb.
     'consumer_key'   => Rails.configuration.consumer_key,
     'domain'         => 'localhost'
   }
