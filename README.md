@@ -93,7 +93,7 @@ Let's take a look at a simple example of the SDK in action. In this example, we'
 ### **Start up your web server and view the standalone assessment example**
 To start up your Ruby web server, first find the following folder location under the SDK. Change directory ('cd') to this location on the command line.
 
-    learnosity-sdk-ruby/examples/lrn-sdk-rails/
+    cd examples/lrn-sdk-rails/
 
 To start, run this command from that folder:
 
