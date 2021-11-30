@@ -48,7 +48,7 @@ There's more features, besides. See the detailed list of SDK features on the [re
 ## Requirements
 1. Runtime libraries for Ruby installed. ([instructions](https://www.ruby.org/downloads/))
 
-2. The [Gem]() package manager installed. You use Gem to access the Learnosity Ruby SDK on [RubyGems](https://pypi.org/).
+2. The [Gem]() package manager installed. You use Gem to access the Learnosity Ruby SDK on [RubyGems](https://rubygems.org/gems/learnosity-sdk).
 
 Not using Ruby? See the [SDKs for other languages](https://help.learnosity.com/hc/en-us/sections/360000194318-Server-side-development-SDKs).
 
