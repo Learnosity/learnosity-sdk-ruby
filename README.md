@@ -53,10 +53,7 @@ There's more features, besides. See the detailed list of SDK features on the [re
 Not using Ruby? See the [SDKs for other languages](https://help.learnosity.com/hc/en-us/sections/360000194318-Server-side-development-SDKs).
 
 ### Supported Ruby Versions
-The following Ruby versions are tested and supported:
-
-* Ruby 3.0.2 ??? (are we testing for this? What can we recommend here?)
-* Ruby 2.7.4 ??? (are we testing for this? What can we recommend here?)
+The Ruby SDK supports the “normal maintenance” and “security maintenance” versions listed on the [Ruby home page](https://www.ruby-lang.org/en/downloads/branches/). Please contact our support team if you are having trouble with a specific version.
 
 [(Back to top)](#table-of-contents)
 
