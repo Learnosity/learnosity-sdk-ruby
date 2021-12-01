@@ -2,7 +2,7 @@
 
 ## Usage
 
-Some usage examples can be found in the `examples/` subdirectory.
+Some usage examples can be found in the `examples/simple` subdirectory. A working Rails project can be found under `docs/quickstart/lrn-sdk-rails/`.
 
 ### Init
 
@@ -28,12 +28,15 @@ say, the `items` API, you just need to instantiate the
 require "learnosity/sdk/request/init"
 
 security_packet = {
-    # XXX: This is a Learnosity Demos consumer; replace it with your own consumer key. Set values in application.rb.
+    # XXX: This is a Learnosity Demos consumer; replace it with your own consumer key.
+    # Add the demo consumer key and secret to application.rb in your Rails project: docs/quickstart/lrn-sdk-rails/config/
+    # application.rb -- this path shows a file from the quick start example project, which is explained in README.md.
     'consumer_key'   => Rails.configuration.consumer_key,
     'domain'         => 'localhost'
 }
 # XXX: The consumer secret should be in a properly secured credential store, and *NEVER* checked into version control.
-# Set values in application.rb.
+# Add the demo consumer key and secret to application.rb in your Rails project: docs/quickstart/lrn-sdk-rails/config/
+# application.rb -- this path shows a file from the quick start example project, which is explained in README.md.
 consumer_secret = Rails.configuration.consumer_secret
 
 items_request = { 'limit' => 50 }
@@ -77,12 +80,15 @@ require 'net/http'
 require "learnosity/sdk/request/init"
 
 security_packet = {
-    # XXX: This is a Learnosity Demos consumer; replace it with your own consumer key. Set values in application.rb.
+    # XXX: This is a Learnosity Demos consumer; replace it with your own consumer key.
+    # Add the demo consumer key and secret to application.rb in your Rails project: docs/quickstart/lrn-sdk-rails/config/
+    # application.rb -- this path shows a file from the quick start example project, which is explained in README.md. 
     'consumer_key'   => Rails.configuration.consumer_key,
     'domain'         => 'localhost'
 }
 # XXX: The consumer secret should be in a properly secured credential store, and *NEVER* checked into version control.
-# Set values in application.rb.
+# Add the demo consumer key and secret to application.rb in your Rails project: docs/quickstart/lrn-sdk-rails/config/
+# application.rb -- this path shows a file from the quick start example project, which is explained in README.md.
 consumer_secret = Rails.configuration.consumer_secret
 
 data_request = { 'limit' => 50 }
@@ -162,19 +168,22 @@ Create a default controller
 Add the `require` for the SDK at the top of the newly created controller,
 `app/controllers/index_controller.rb`, and insert the assessment configuration
 there (taken from [items-api-demo](examples/simple/init_items.rb), and truncated for legibility). Add the demo 
-consumer key and secret to [application.rb].
+consumer key and secret to [[application.rb](docs/quickstart/lrn-sdk-rails/config/application.rb) (link shows the file from the quick start example, which is referenced in [README.md](README.md)).
 
 ```ruby
 require 'learnosity/sdk/request/init'
 
 class IndexController < ApplicationController
   @@security_packet = {
-    # XXX: This is a Learnosity Demos consumer; replace it with your own consumer key. Set values in application.rb.
+    # XXX: This is a Learnosity Demos consumer; replace it with your own consumer key.
+    # Add the demo consumer key and secret to application.rb in your Rails project: docs/quickstart/lrn-sdk-rails/config/
+    # application.rb -- this path shows a file from the quick start example project, which is explained in README.md.
     'consumer_key'   => Rails.configuration.consumer_key,
     'domain'         => 'localhost'
   }
 # XXX: The consumer secret should be in a properly secured credential store, and *NEVER* checked into version control.
-# Set values in application.rb.
+# Add the demo consumer key and secret to application.rb in your Rails project: docs/quickstart/lrn-sdk-rails/config/
+# application.rb -- this path shows a file from the quick start example project, which is explained in README.md.
 consumer_secret = Rails.configuration.consumer_secret
   @@items_request = {
 	[...]
@@ -227,7 +236,7 @@ Finally, you can serve the project with
 It will become available at http://localhost:3000/index/index
 
 For reference you can find the result of these steps in
-`examples/lrn-sdk-rails`.
+`docs/quickstart/lrn-sdk-rails/`.
 
 ## Further reading
 Thanks for reading to the end! Find more information about developing an app with Learnosity on our documentation sites: 
