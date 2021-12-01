@@ -161,7 +161,7 @@ Create a default controller
 
 Add the `require` for the SDK at the top of the newly created controller,
 `app/controllers/index_controller.rb`, and insert the assessment configuration
-there (taken from [items-api-demo], and truncated for legibility). Add the demo 
+there (taken from [items-api-demo](examples/simple/init_items.rb), and truncated for legibility). Add the demo 
 consumer key and secret to [application.rb].
 
 ```ruby

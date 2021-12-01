@@ -39,16 +39,16 @@ Once the SDK has created the signed request for you, your app sends that on to a
 
 ![image-assessment-retrieval.png](docs/images/image-assessment-retrieval.png)
 
-This scenario is what you can see running in the Quick start guide example ([see below](#quick-start-guide)).
+This scenario is what you can see running in the quick start guide example ([see below](#quick-start-guide)).
 
 There's more features, besides. See the detailed list of SDK features on the [reference page](REFERENCE.md).
 
 [(Back to top)](#table-of-contents)
 
 ## Requirements
-1. Runtime libraries for Ruby installed. ([instructions](https://www.ruby.org/downloads/))
+1. Runtime libraries for Ruby installed. ([instructions](https://www.ruby-lang.org/en/downloads/branches/))
 
-2. The [Gem]() package manager installed. You use Gem to access the Learnosity Ruby SDK on [RubyGems](https://rubygems.org/gems/learnosity-sdk).
+2. The [RubyGems](https://rubygems.org/) package manager installed. You use this to access the Learnosity Ruby SDK on [RubyGems](https://rubygems.org/gems/learnosity-sdk).
 
 Not using Ruby? See the [SDKs for other languages](https://help.learnosity.com/hc/en-us/sections/360000194318-Server-side-development-SDKs).
 
@@ -58,7 +58,7 @@ The Ruby SDK supports the “normal maintenance” and “security maintenance�
 [(Back to top)](#table-of-contents)
 
 ## Installation
-###  **Installation via RubyGems**
+### **Installation via RubyGems**
 Using RubyGems is the recommended way to install the Learnosity SDK for Ruby in production. The easiest way is to run this from your project folder:
 
     gem install learnosity_sdk
@@ -80,7 +80,7 @@ Note: after installation, run this command in the SDK root folder:
     bundle install
 
 Note that these manual installation methods are for development and testing only.
-For production use, you should install the SDK using the Pip package manager for Ruby, as described above.
+For production use, you should install the SDK using the RubyGems package manager for Ruby, as described above.
 
 [(Back to top)](#table-of-contents)
 
@@ -90,7 +90,7 @@ Let's take a look at a simple example of the SDK in action. In this example, we'
 ### **Start up your web server and view the standalone assessment example**
 To start up your Ruby web server, first find the following folder location under the SDK. Change directory ('cd') to this location on the command line.
 
-    cd examples/lrn-sdk-rails/
+    cd docs/quickstart/lrn-sdk-rails/
 
 To start, run this command from that folder:
 
@@ -98,7 +98,7 @@ To start, run this command from that folder:
 
 From this point on, we'll assume that your web server is available at this local address (it will report the port being used when you launch it, by default it's port 3000): 
 
-http://localhost:3000/index/index
+http://localhost:3000
 
 The page will load. This is a basic example of an assessment loaded into a web page with Learnosity's assessment player. You can interact with this demo assessment to try out the various Question types.
 
@@ -107,14 +107,14 @@ The page will load. This is a basic example of an assessment loaded into a web p
 [(Back to top)](#table-of-contents)
 
 ### **How it works**
-Let's walk through the code for this standalone assessment example. The source files are included under the [/example/lrn-sdk-rails/] folder.
+Let's walk through the code for this standalone assessment example. The source files are included under the `docs/quickstart/lrn-sdk-rails/` folder.
 
-The first section of code is a controller file in Ruby, ([index_controller.rb]) from [/learnosity-sdk-ruby/examples/lrn-sdk-rails/app/controllers/] and it is executed server-side. It constructs a set of configuration options for Items API, and securely signs them using the consumer key. We also add a few lines to ([application.rb]) for our Learnosity credentials. The second section is HTML and JavaScript in an [ERB](https://docs.ruby-lang.org/en/2.3.0/ERB.html) template ([index.html.erb]) and is executed client-side, once the page is loaded in the browser. It renders and runs the assessment functionality.
+The first section of code is a controller file in Ruby, [index_controller.rb](docs/quickstart/lrn-sdk-rails/app/controllers/index_controller.rb) from `docs/quickstart/lrn-sdk-rails/app/controllers/` and it is executed server-side. It constructs a set of configuration options for Items API, and securely signs them using the consumer key. We also add a few lines to [application.rb](docs/quickstart/lrn-sdk-rails/config/application.rb) for our Learnosity credentials. The second section is HTML and JavaScript in an [ERB](https://docs.ruby-lang.org/en/2.3.0/ERB.html) template [index.html.erb](docs/quickstart/lrn-sdk-rails/app/views/index/index.html.erb) and is executed client-side, once the page is loaded in the browser. It renders and runs the assessment functionality.
 
 [(Back to top)](#table-of-contents)
 
 ### **Server-side code**
-We start by including some LearnositySDK helpers in [index_controller.rb]- they'll make it easy to generate and sign the config options, and unique user and session IDs.
+We start by including some LearnositySDK helpers in [index_controller.rb](docs/quickstart/lrn-sdk-rails/app/controllers/index_controller.rb) - they'll make it easy to generate and sign the config options, and unique user and session IDs.
 
 ``` ruby
 require 'learnosity/sdk/request/init' # Learnosity helper.
@@ -150,7 +150,7 @@ class IndexController < ApplicationController
 
 Next, we declare the Learnosity consumer credentials we'll use to authorize this request. 
 
-We'll now open the file [application.rb], under [/lrn-sdk-rails/config] to set our Learnosity login credentials. Notice the two values *config.consumer_key* and *config.consumer_secret*.
+We'll now open the file [application.rb](docs/quickstart/lrn-sdk-rails/config/application.rb), under `docs/quickstart/lrn-sdk-rails/config/` to set our Learnosity login credentials. Notice the two values *config.consumer_key* and *config.consumer_secret*.
 
 ``` ruby
 require 'rails/all'
@@ -179,7 +179,7 @@ end
 The consumer key and consumer secret in this example are for Learnosity's public "demos" account. Once Learnosity provides your own consumer credentials, your Item bank and assessment data will be tied to your own consumer key and secret.
 <i>(of course, you should never normally put passwords into version control)</i>
 
-Now, back in [index_controller.rb], we reference the key and secret, and also construct security settings that ensure the report is initialized on the intended domain. The value provided to the domain property must match the domain from which the file is actually served.
+Now, back in [index_controller.rb](docs/quickstart/lrn-sdk-rails/app/controllers/index_controller.rb), we reference the key and secret, and also construct security settings that ensure the report is initialized on the intended domain. The value provided to the domain property must match the domain from which the file is actually served.
 
 ``` ruby
     @@security_packet = {
