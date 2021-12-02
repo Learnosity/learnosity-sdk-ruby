@@ -63,23 +63,31 @@ The Ruby SDK supports the “normal maintenance” and “security maintenance�
 ### **Installation via RubyGems**
 Using RubyGems is the recommended way to install the Learnosity SDK for Ruby in production. The easiest way is to run this from your project folder:
 
+``` bash
     gem install learnosity_sdk
+```
 
 ### **Alternative method 1: download the zip file**
 Download the latest version of the SDK as a self-contained ZIP file from the [GitHub Releases](https://github.com/Learnosity/learnosity-sdk-ruby/releases) page. The distribution ZIP file contains all the necessary dependencies. 
 
 Note: after installation, run this command in the SDK root folder:
 
+``` bash
     bundle install
+```
 
 ### **Alternative 2: development install from a git clone**
 To install from the terminal, run this command:
 
+``` bash
     git clone git@github.com:Learnosity/learnosity-sdk-Ruby.git
+```
 
 Note: after installation, run this command in the SDK root folder:
 
+``` bash
     bundle install
+```
 
 Note that these manual installation methods are for development and testing only.
 For production use, you should install the SDK using the RubyGems package manager for Ruby, as described above.
@@ -92,11 +100,15 @@ Let's take a look at a simple example of the SDK in action. In this example, we'
 ### **Start up your web server and view the standalone assessment example**
 To start up your Ruby web server, first find the following folder location under the SDK. Change directory ('cd') to this location on the command line.
 
+``` bash
     cd docs/quickstart/lrn-sdk-rails/
+```
 
 To start, run this command from that folder:
 
+``` bash
     rails server
+```
 
 From this point on, we'll assume that your web server is available at this local address (it will report the port being used when you launch it, by default it's port 3000): 
 
