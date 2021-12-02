@@ -1,4 +1,4 @@
-<p align="center"><img width="50%" height="50%" src="docs/images/image-logo-graphic.png"></p>
+<p align="center"><img width="50%" height="50%" src="docs/images/image-logo-graphic.png" title="Learnosity logo, an open book with multicolored pages."></p>
 <h1 align="center">Learnosity SDK - Ruby</h1>
 <p align="center">Everything you need to start building your app in Learnosity, with the Ruby programming language.<br> 
 (Prefer another language? <a href="https://help.learnosity.com/hc/en-us/sections/360000194318-Server-side-development-SDKs">Click here</a>)<br>
@@ -25,7 +25,7 @@ An official Learnosity open-source project.</p>
 ## Overview: what does it do?
 The Learnosity Ruby SDK makes it simple to interact with Learnosity APIs.
 
-![image-concept-overview.png](docs/images/image-concept-overview.png)
+![image-concept-overview.png](docs/images/image-concept-overview.png "Conceptual overview, showing your app, connecting to the Learnosity SDK, then the Learnosity Items API.")
 
 It provides a number of convenience features for developers, that make it simple to do the following essential tasks:
 * Creating signed security requests for API initialization, and
@@ -33,11 +33,11 @@ It provides a number of convenience features for developers, that make it simple
 
 For example, the SDK helps with creating a signed request for Learnosity:
 
-![image-signed-request-creation.png](docs/images/image-signed-request-creation.png)
+![image-signed-request-creation.png](docs/images/image-signed-request-creation.png "Diagram showing the flow of information from your app, sending key, secret and parameters to the Learnosity SDK, then the Learnosity SDK sending back a fully formed request.")
 
 Once the SDK has created the signed request for you, your app sends that on to an API in the Learnosity cloud, which then retrieves the assessment you are asking for, as seen in the diagram below:
 
-![image-assessment-retrieval.png](docs/images/image-assessment-retrieval.png)
+![image-assessment-retrieval.png](docs/images/image-assessment-retrieval.png "Diagram showing your app sending the fully formed request to the Learnosity cloud, then the cloud retrieving your assessment, which is then rendered in the student's browser.")
 
 This scenario is what you can see running in the quick start guide example ([see below](#quick-start-guide)).
 
