@@ -7,12 +7,14 @@ require 'learnosity/sdk/request/init'
 itembank_uri = URI('https://data.learnosity.com/v1/itembank/items')
 
 security_packet = {
-	# XXX: This is a Learnosity Demos consumer; replace it with your own consumer key
-	'consumer_key'   => 'yis0TYCu7U9V4o7M',
+    # XXX: This is a Learnosity Demos consumer; replace it with your own consumer key. Set values in application.rb.
+    'consumer_key'   => Rails.configuration.consumer_key,
 	'domain'         => 'localhost'
 }
-# XXX: The consumer secret should be in a properly secured credential store, and *NEVER* checked in in revision control
-consumer_secret = '74c5fd430cf1242a527f6223aebd42d30464be22'
+# XXX: The consumer secret should be in a properly secured credential store, and *NEVER* checked into version control.
+# Set values in application.rb.
+consumer_secret = Rails.configuration.consumer_secret
+
 data_request = { 'limit' => 1 }
 
 # Do 5 subsequent requests using the `next` pointer

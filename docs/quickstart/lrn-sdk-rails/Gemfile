@@ -54,4 +54,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # The :path allows us to use the local code, you'll likely not need that in a
 # normal project
-gem 'learnosity-sdk', :path => '../..'
+gem 'learnosity-sdk', :path => '../../..'

@@ -7,15 +7,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
+
 - Improved Makefile and tests
 - PR template
 
 ## [v0.2.1] - 2019-01-08
 ### Added
+
 - Updated version range of `sys-uname` to include versions `1.0` and above
 
 ## [v0.2.0] - 2019-08-12
 ### Added
+
 - This ChangeLog!
 - Telemetry data (basic information about the execution environment) is now added to the request objects being signed which is later read and logged internally by our APIs when the request is received. This allows us to better support our various SDKs and does not send any additional network requests. More information can be found in README.md.
 
