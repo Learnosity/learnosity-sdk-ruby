@@ -28,6 +28,7 @@ The Learnosity Ruby SDK makes it simple to interact with Learnosity APIs.
 ![image-concept-overview.png](docs/images/image-concept-overview.png "Conceptual overview, showing your app, connecting to the Learnosity SDK, then the Learnosity Items API.")
 
 It provides a number of convenience features for developers, that make it simple to do the following essential tasks:
+
 * Creating signed security requests for API initialization, and
 * Interacting with the Data API.
 
@@ -46,6 +47,7 @@ There's more features, besides. See the detailed list of SDK features on the [re
 [(Back to top)](#table-of-contents)
 
 ## Requirements
+
 1. Runtime libraries for Ruby installed. ([instructions](https://www.ruby-lang.org/en/downloads/branches/))
 
 2. The [RubyGems](https://rubygems.org/) package manager installed. You use this to access the Learnosity Ruby SDK on [RubyGems](https://rubygems.org/gems/learnosity-sdk).
@@ -254,6 +256,7 @@ See a more detailed breakdown of all the SDK features, and examples of how to us
 
 ### **Additional quick start guides**
 There are more quick start guides, going beyond the initial quick start topic of loading an assessment, these further tutorials show how to set up authoring and analytics:
+
 * [Authoring Items quick start guide](https://help.learnosity.com/hc/en-us/articles/360000754958-Getting-Started-With-the-Author-API) (Author API) - create and edit new Questions and Items for your Item bank, then group your assessment Items into Activities, and
 * [Analytics / student reporting quick start guide](https://help.learnosity.com/hc/en-us/articles/360000755838-Getting-Started-With-the-Reports-API) (Reports API) - view the results and scores from an assessment Activity. 
 
@@ -291,6 +294,7 @@ The Learnosity Ruby SDK is licensed under an Apache 2.0 license. [Read more](LIC
 
 ## Usage tracking
 Our SDKs include code to track the following information by adding it to the request being signed:
+
 - SDK version
 - SDK language
 - SDK language version
