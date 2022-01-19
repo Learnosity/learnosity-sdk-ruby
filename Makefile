@@ -1,5 +1,5 @@
 DOCKER := $(if $(LRN_SDK_NO_DOCKER),,$(shell which docker))
-RUBY_VERSION = 3.0
+RUBY_VERSION ?= 3.1
 
 TARGETS = all install-deps build devbuild prodbuild \
 	test test-unit test-integration-env \
@@ -18,7 +18,7 @@ DKR = docker container run -t --rm \
 		-e LRN_SDK_NO_DOCKER=1 \
 		-e ENV -e REGION -e VER \
 		$(if $(findstring dev,$(ENV)),--net host) \
-		ruby:$(RUBY_VERSION)
+		ruby:$(value RUBY_VERSION)
 
 $(TARGETS):
 	$(DKR) make -e MAKEFLAGS="$(MAKEFLAGS)" $@
@@ -47,9 +47,8 @@ test-integration-env:
 	ENV=$(ENV) REGION=$(REGION) VER=$(VER) bundle exec rake spec SPEC=spec/integration/*
 
 clean:
-	bundle exec rake clean
-
-#-rm Gemfile.lock .rspec_status
+	-bundle exec rake clean
+	-rm -f Gemfile.lock .rspec_status
 
 dist: build version-check test
 
