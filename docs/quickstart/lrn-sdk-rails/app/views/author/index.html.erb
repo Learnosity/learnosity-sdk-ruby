@@ -1,0 +1,14 @@
+<h1>Standalone Author Example</h1>
+<div id="learnosity-author"></div>
+<script src="https://authorapi.learnosity.com?latest"></script>
+<script>
+   var callbacks = {
+   readyListener: function () {
+   console.log("Author API has successfully initialized.");
+   },
+    errorListener: function (err) {
+    console.log(err);
+    }
+    };
+    var authorApp = LearnosityAuthor.init( <%= raw @init.generate %> );
+</script>
