@@ -1,23 +1,34 @@
-<h1>Standalone Assessment Example</h1>
-
-<div id="learnosity_assess"></div>
-
-<script src="//items.learnosity.com"></script>
-<script>
-  var eventOptions = {
-    readyListener: init
-  },
-    itemsApp = LearnosityItems.init(<%= raw @init.generate %>);
-
-  function init () {
-    var assessApp = itemsApp.assessApp();
-
-    assessApp.on('item:load', function () {
-      console.log('Active item:', getActiveItem(this.getItems()));
-    });
-
-    assessApp.on('test:submit:success', function () {
-      toggleModalClass();
-    });
-  }
-</script>
+<html>
+     <head>
+         <style>
+            .tb { border-collapse: collapse; }
+            .tb th, .tb td { padding: 5px; border: solid 1px #777; text-align: center;}
+            .tb th { background-color: lightblue; }
+        </style>
+    </head>
+    <body>
+        <h1>Standalone Example APIs</title></h1>
+        <table class="tb" style="width:300px;">
+            <tr>
+                <th>APIs</th>
+                <th>Links</th>
+            </tr>
+            <tr>
+                <td>Author API</td>
+                <td><%=link_to("Here", author_index_path, target: '_blank') %> </td>
+            </tr>
+            <tr>
+                <td>Questions API</td>
+                <td><%=link_to("Here", questions_index_path, target: '_blank') %></td>
+            </tr>
+            <tr>
+                <td>Items API</td>
+                <td><%=link_to("Here", items_index_path, target: '_blank') %></td>
+            </tr>
+            <tr>
+                <td>Reports API</td>
+                <td><%=link_to("Here", reports_index_path, target: '_blank') %></td>
+            </tr>
+        </table>
+    </body>
+</html>

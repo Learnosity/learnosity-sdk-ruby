@@ -1,6 +1,6 @@
 require 'digest'
 require 'json'
-
+require 'openssl'
 require 'learnosity/sdk/exceptions'
 require 'learnosity/sdk/utils'
 require 'learnosity/sdk/version'
@@ -23,6 +23,8 @@ module Learnosity
 
         # Determines if telemetry is enabled
         @@telemetry_enabled = true
+
+        @@signaturePrefix = '$02$'
 
         def self.enable_telemetry
           @@telemetry_enabled = true
@@ -60,8 +62,6 @@ module Learnosity
             end
           end
 
-          signature_array << @secret
-
           if @sign_request_data and ! @request_string.nil?
             signature_array << @request_string
           end
@@ -70,7 +70,7 @@ module Learnosity
             signature_array << @action
           end
 
-          hash_signature(signature_array)
+          hash_signature(signature_array, @secret)
         end
 
         def generate(encode = true)
@@ -255,7 +255,7 @@ module Learnosity
           when 'events'
             hashed_users = {}
             @request_packet['users'].each do |k, v|
-              hashed_users[k] =  hash_value(k + @secret)
+              hashed_users[k] =  hash_value(k , @secret)
             end
             @request_packet['users'] = hashed_users
           when 'author', 'data'
@@ -269,12 +269,13 @@ module Learnosity
           JSON.generate @request_packet unless request_packet.nil?
         end
 
-        def hash_value(value)
-          Digest::SHA256.hexdigest value
+        def hash_value(value, secret)
+
+          @@signaturePrefix + OpenSSL::HMAC.hexdigest("SHA256", secret, value)
         end
 
-        def hash_signature(signature_array)
-          hash_value(signature_array.join('_'))
+        def hash_signature(signature_array, secret)
+          hash_value(signature_array.join('_'), secret)
         end
       end
 
