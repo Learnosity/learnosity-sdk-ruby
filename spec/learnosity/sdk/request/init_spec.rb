@@ -214,7 +214,7 @@ RSpec.describe Learnosity::Sdk::Request::Init do
         consumer_secret,
         assess_request
       )
-      expect(init.generate_signature).to eq('03f4869659eeaca81077785135d5157874f4800e57752bf507891bf39c4d4a90')
+      expect(init.generate_signature).to eq('$02$8de51b7601f606a7f32665541026580d09616028dde9a929ce81cf2e88f56eb8')
     end
 
     it 'can generate init options' do
@@ -224,7 +224,7 @@ RSpec.describe Learnosity::Sdk::Request::Init do
         consumer_secret,
         assess_request
       )
-      expect(init.generate(false)).to eq({"items" => [{"content" => "<span class=\"learnosity-response question-demoscience1234\"></span>", "response_ids" => ["demoscience1234"], "workflow" => "", "reference" => "question-demoscience1"}, {"content" => "<span class=\"learnosity-response question-demoscience5678\"></span>", "response_ids" => ["demoscience5678"], "workflow" => "", "reference" => "question-demoscience2"}], "ui_style" => "horizontal", "name" => "Demo (2 questions)", "state" => "initial", "metadata" => [], "navigation" => {"show_next" => true, "toc" => true, "show_submit" => true, "show_save" => false, "show_prev" => true, "show_title" => true, "show_intro" => true}, "time" => {"max_time" => 600, "limit_type" => "soft", "show_pause" => true, "warning_time" => 60, "show_time" => true}, "configuration" => {"onsubmit_redirect_url" => "/assessment/", "onsave_redirect_url" => "/assessment/", "idle_timeout" => true, "questionsApiVersion" => "v2"}, "questionsApiActivity" => {"user_id" => '$ANONYMIZED_USER_ID', "type" => "submit_practice", "state" => "initial", "id" => "assessdemo", "name" => "Assess API - Demo", "questions" => [{"response_id" => "demoscience1234", "type" => "sortlist", "description" => "In this question, the student needs to sort the events, chronologically earliest to latest.", "list" => ["Russian Revolution", "Discovery of the Americas", "Storming of the Bastille", "Battle of Plataea", "Founding of Rome", "First Crusade"], "instant_feedback" => true, "feedback_attempts" => 2, "validation" => {"valid_response" => [4, 3, 5, 1, 2, 0], "valid_score" => 1, "partial_scoring" => true, "penalty_score" => -1}}, {"response_id" => "demoscience5678", "type" => "highlight", "description" => "The student needs to mark one of the flowers anthers in the image.", "img_src" => "http://www.learnosity.com/static/img/flower.jpg", "line_color" => "rgb(255, 20, 0)", "line_width" => "4"}], "consumer_key" => "yis0TYCu7U9V4o7M", "timestamp" => "20140626-0528", "signature" => "03f4869659eeaca81077785135d5157874f4800e57752bf507891bf39c4d4a90"}, "type" => "activity"})
+      expect(init.generate(false)).to eq({"items" => [{"content" => "<span class=\"learnosity-response question-demoscience1234\"></span>", "response_ids" => ["demoscience1234"], "workflow" => "", "reference" => "question-demoscience1"}, {"content" => "<span class=\"learnosity-response question-demoscience5678\"></span>", "response_ids" => ["demoscience5678"], "workflow" => "", "reference" => "question-demoscience2"}], "ui_style" => "horizontal", "name" => "Demo (2 questions)", "state" => "initial", "metadata" => [], "navigation" => {"show_next" => true, "toc" => true, "show_submit" => true, "show_save" => false, "show_prev" => true, "show_title" => true, "show_intro" => true}, "time" => {"max_time" => 600, "limit_type" => "soft", "show_pause" => true, "warning_time" => 60, "show_time" => true}, "configuration" => {"onsubmit_redirect_url" => "/assessment/", "onsave_redirect_url" => "/assessment/", "idle_timeout" => true, "questionsApiVersion" => "v2"}, "questionsApiActivity" => {"user_id" => '$ANONYMIZED_USER_ID', "type" => "submit_practice", "state" => "initial", "id" => "assessdemo", "name" => "Assess API - Demo", "questions" => [{"response_id" => "demoscience1234", "type" => "sortlist", "description" => "In this question, the student needs to sort the events, chronologically earliest to latest.", "list" => ["Russian Revolution", "Discovery of the Americas", "Storming of the Bastille", "Battle of Plataea", "Founding of Rome", "First Crusade"], "instant_feedback" => true, "feedback_attempts" => 2, "validation" => {"valid_response" => [4, 3, 5, 1, 2, 0], "valid_score" => 1, "partial_scoring" => true, "penalty_score" => -1}}, {"response_id" => "demoscience5678", "type" => "highlight", "description" => "The student needs to mark one of the flowers anthers in the image.", "img_src" => "http://www.learnosity.com/static/img/flower.jpg", "line_color" => "rgb(255, 20, 0)", "line_width" => "4"}], "consumer_key" => "yis0TYCu7U9V4o7M", "timestamp" => "20140626-0528", "signature" => "$02$8de51b7601f606a7f32665541026580d09616028dde9a929ce81cf2e88f56eb8"}, "type" => "activity"})
     end
   end
 
@@ -252,7 +252,7 @@ RSpec.describe Learnosity::Sdk::Request::Init do
         consumer_secret,
         author_request
       )
-      expect(init.generate_signature).to eq('108b985a4db36ef03905572943a514fc02ed7cc6b700926183df7babc2cd1c96')
+      expect(init.generate_signature).to eq('$02$ca2769c4be77037cf22e0f7a2291fe48c470ac6db2f45520a259907370eff861')
     end
 
     it 'can generate init options' do
@@ -262,7 +262,7 @@ RSpec.describe Learnosity::Sdk::Request::Init do
         consumer_secret,
         author_request
       )
-      expect(init.generate(true)).to eq('{"security":{"consumer_key":"yis0TYCu7U9V4o7M","domain":"localhost","timestamp":"20140626-0528","signature":"108b985a4db36ef03905572943a514fc02ed7cc6b700926183df7babc2cd1c96"},"request":{"mode":"item_list","config":{"item_list":{"item":{"status":true}}},"user":{"id":"walterwhite","firstname":"walter","lastname":"white"}}}')
+      expect(init.generate(true)).to eq('{"security":{"consumer_key":"yis0TYCu7U9V4o7M","domain":"localhost","timestamp":"20140626-0528","signature":"$02$ca2769c4be77037cf22e0f7a2291fe48c470ac6db2f45520a259907370eff861"},"request":{"mode":"item_list","config":{"item_list":{"item":{"status":true}}},"user":{"id":"walterwhite","firstname":"walter","lastname":"white"}}}')
     end
   end
 
@@ -277,7 +277,7 @@ RSpec.describe Learnosity::Sdk::Request::Init do
         data_request,
         'get'
       )
-      expect(init.generate_signature).to eq("e1eae0b86148df69173cb3b824275ea73c9c93967f7d17d6957fcdd299c8a4fe")
+      expect(init.generate_signature).to eq("$02$e19c8a62fba81ef6baf2731e2ab0512feaf573ca5ca5929c2ee9a77303d2e197")
     end
 
     it 'can generate signature for POST' do
@@ -288,7 +288,7 @@ RSpec.describe Learnosity::Sdk::Request::Init do
         data_request,
         'post'
       )
-      expect(init.generate_signature).to eq("18e5416041a13f95681f747222ca7bdaaebde057f4f222083881cd0ad6282c38")
+      expect(init.generate_signature).to eq("$02$9d1971fb9ac51482f7e73dcf87fc029d4a3dfffa05314f71af9d89fb3c2bcf16")
     end
 
     it 'can generate signature for GET with expiry' do
@@ -302,7 +302,7 @@ RSpec.describe Learnosity::Sdk::Request::Init do
         data_request,
         'get'
       )
-      expect(init.generate_signature).to eq("5d962d5fea8e5413bddc0f304650c4b58ed4419015e47934452127dc2120fd8a")
+      expect(init.generate_signature).to eq("$02$579bbf967c9fa886865fc85313bf0f70bdf3636a78732439ea19d6c2b908f49c")
     end
 
     it 'can generate init options for GET' do
@@ -315,7 +315,7 @@ RSpec.describe Learnosity::Sdk::Request::Init do
       )
       expect(init.generate).to eq(
                                    {
-                                     'security' => '{"consumer_key":"yis0TYCu7U9V4o7M","domain":"localhost","timestamp":"20140626-0528","signature":"e1eae0b86148df69173cb3b824275ea73c9c93967f7d17d6957fcdd299c8a4fe"}',
+                                     'security' => '{"consumer_key":"yis0TYCu7U9V4o7M","domain":"localhost","timestamp":"20140626-0528","signature":"$02$e19c8a62fba81ef6baf2731e2ab0512feaf573ca5ca5929c2ee9a77303d2e197"}',
                                      'request' => '{"limit":100}',
                                      'action' => 'get'
                                    }
@@ -332,7 +332,7 @@ RSpec.describe Learnosity::Sdk::Request::Init do
       )
       expect(init.generate).to eq(
                                    {
-                                     'security' => '{"consumer_key":"yis0TYCu7U9V4o7M","domain":"localhost","timestamp":"20140626-0528","signature":"18e5416041a13f95681f747222ca7bdaaebde057f4f222083881cd0ad6282c38"}',
+                                     'security' => '{"consumer_key":"yis0TYCu7U9V4o7M","domain":"localhost","timestamp":"20140626-0528","signature":"$02$9d1971fb9ac51482f7e73dcf87fc029d4a3dfffa05314f71af9d89fb3c2bcf16"}',
                                      'request' => '{"limit":100}',
                                      'action' => 'post'
                                    }
@@ -351,13 +351,14 @@ RSpec.describe Learnosity::Sdk::Request::Init do
     }
 
     it 'can generate signature' do
+
       init = Learnosity::Sdk::Request::Init.new(
         'events',
         security_packet,
         consumer_secret,
         events_request
       )
-      expect(init.generate_signature).to eq('20739eed410d54a135e8cb3745628834886ab315bfc01693ce9acc0d14dc98bf')
+      expect(init.generate_signature).to eq('$02$5c3160dbb9ab4d01774b5c2fc3b01a35ce4f9709c84571c27dfe333d1ca9d349')
     end
 
     it 'can generate init options' do
@@ -368,7 +369,7 @@ RSpec.describe Learnosity::Sdk::Request::Init do
         events_request
       )
       expect(init.generate(true)).to eq(
-                                       '{"security":{"consumer_key":"yis0TYCu7U9V4o7M","domain":"localhost","timestamp":"20140626-0528","signature":"20739eed410d54a135e8cb3745628834886ab315bfc01693ce9acc0d14dc98bf"},"config":{"users":{"$ANONYMIZED_USER_ID_1":"64ccf06154cf4133624372459ebcccb8b2f8bd7458a73df681acef4e742e175c","$ANONYMIZED_USER_ID_2":"7fa4d6ef8926add8b6411123fce916367250a6a99f50ab8ec39c99d768377adb","$ANONYMIZED_USER_ID_3":"3d5b26843da9192319036b67f8c5cc26e1e1763811270ba164665d0027296952","$ANONYMIZED_USER_ID_4":"3b6ac78f60f3e3eb7a85cec8b48bdca0f590f959e0a87a9c4222898678bd50c8"}}}',
+                                       '{"security":{"consumer_key":"yis0TYCu7U9V4o7M","domain":"localhost","timestamp":"20140626-0528","signature":"$02$5c3160dbb9ab4d01774b5c2fc3b01a35ce4f9709c84571c27dfe333d1ca9d349"},"config":{"users":{"$ANONYMIZED_USER_ID_1":"$02$86b390219d0a25c17cbb5bfc55c40329c4896fd04f187459da583e3cdde0f035","$ANONYMIZED_USER_ID_2":"$02$281fa3c3776466975c5395a922c6f201f46223f952e6ce1b3588fefdb0982f93","$ANONYMIZED_USER_ID_3":"$02$c960ac3d1b613655b7796f2569327fe7f33380eca7a9e25b0d33114b5fa57f09","$ANONYMIZED_USER_ID_4":"$02$941e0abbc1e96c30e2aba21d752d06847d45b283d63c9e16510bddbc2a187f10"}}}',
                                      )
     end
   end
@@ -392,7 +393,7 @@ RSpec.describe Learnosity::Sdk::Request::Init do
         items_request
       )
 
-      expect(init.generate_signature).to eq("82edaf80c2abb55c7a78d089f5b6f89393e621ef4a85150489ac2cfdd6a32f9a")
+      expect(init.generate_signature).to eq("$02$36c439e7d18f2347ce08ca4b8d4803a22325d54352650b19b6f4aaa521b613d9")
     end
 
     it 'can generate init options' do
@@ -403,7 +404,7 @@ RSpec.describe Learnosity::Sdk::Request::Init do
         items_request
       )
 
-      expect(init.generate).to eq('{"security":{"consumer_key":"yis0TYCu7U9V4o7M","domain":"localhost","timestamp":"20140626-0528","user_id":"$ANONYMIZED_USER_ID","signature":"82edaf80c2abb55c7a78d089f5b6f89393e621ef4a85150489ac2cfdd6a32f9a"},"request":{"user_id":"$ANONYMIZED_USER_ID","rendering_type":"assess","name":"Items API demo - assess activity demo","state":"initial","activity_id":"items_assess_demo","session_id":"demo_session_uuid","type":"submit_practice","config":{"configuration":{"responsive_regions":true},"navigation":{"scrolling_indicator":true},"regions":"main","time":{"show_pause":true,"max_time":300},"title":"ItemsAPI Assess Isolation Demo","subtitle":"Testing Subtitle Text"},"items":["Demo3"]}}')
+      expect(init.generate).to eq('{"security":{"consumer_key":"yis0TYCu7U9V4o7M","domain":"localhost","timestamp":"20140626-0528","user_id":"$ANONYMIZED_USER_ID","signature":"$02$36c439e7d18f2347ce08ca4b8d4803a22325d54352650b19b6f4aaa521b613d9"},"request":{"user_id":"$ANONYMIZED_USER_ID","rendering_type":"assess","name":"Items API demo - assess activity demo","state":"initial","activity_id":"items_assess_demo","session_id":"demo_session_uuid","type":"submit_practice","config":{"configuration":{"responsive_regions":true},"navigation":{"scrolling_indicator":true},"regions":"main","time":{"show_pause":true,"max_time":300},"title":"ItemsAPI Assess Isolation Demo","subtitle":"Testing Subtitle Text"},"items":["Demo3"]}}')
     end
   end
 
@@ -437,7 +438,7 @@ RSpec.describe Learnosity::Sdk::Request::Init do
         consumer_secret,
         questions_request
       )
-      expect(init.generate_signature).to eq("03f4869659eeaca81077785135d5157874f4800e57752bf507891bf39c4d4a90")
+      expect(init.generate_signature).to eq("$02$8de51b7601f606a7f32665541026580d09616028dde9a929ce81cf2e88f56eb8")
     end
 
     it 'can generate init options' do
@@ -447,7 +448,7 @@ RSpec.describe Learnosity::Sdk::Request::Init do
         consumer_secret,
         questions_request
       )
-      expect(init.generate(false)).to eq({"consumer_key" => "yis0TYCu7U9V4o7M", "timestamp" => "20140626-0528", "user_id" => "$ANONYMIZED_USER_ID", "signature" => "03f4869659eeaca81077785135d5157874f4800e57752bf507891bf39c4d4a90", "type" => "local_practice", "state" => "initial", "questions" => [{"response_id" => "60005", "type" => "association", "stimulus" => "Match the cities to the parent nation.", "stimulus_list" => ["London", "Dublin", "Paris", "Sydney"], "possible_responses" => ["Australia", "France", "Ireland", "England"], "validation" => {"valid_responses" => [["England"], ["Ireland"], ["France"], ["Australia"]]}}]})
+      expect(init.generate(false)).to eq({"consumer_key" => "yis0TYCu7U9V4o7M", "timestamp" => "20140626-0528", "user_id" => "$ANONYMIZED_USER_ID", "signature" => "$02$8de51b7601f606a7f32665541026580d09616028dde9a929ce81cf2e88f56eb8", "type" => "local_practice", "state" => "initial", "questions" => [{"response_id" => "60005", "type" => "association", "stimulus" => "Match the cities to the parent nation.", "stimulus_list" => ["London", "Dublin", "Paris", "Sydney"], "possible_responses" => ["Australia", "France", "Ireland", "England"], "validation" => {"valid_responses" => [["England"], ["Ireland"], ["France"], ["Australia"]]}}]})
     end
   end
 
@@ -472,7 +473,7 @@ RSpec.describe Learnosity::Sdk::Request::Init do
         consumer_secret,
         reports_request
       )
-      expect(init.generate_signature).to eq('91085beccf57bf0df77c89df94d1055e631b36bc11941e61460b445b4ed774bc')
+      expect(init.generate_signature).to eq('$02$8e0069e7aa8058b47509f35be236c53fa1a878c64b12589fd42f48b568f6ac84')
     end
 
     it 'can generate init options' do
@@ -482,7 +483,7 @@ RSpec.describe Learnosity::Sdk::Request::Init do
         consumer_secret,
         reports_request
       )
-      expect(init.generate(true)).to eq('{"security":{"consumer_key":"yis0TYCu7U9V4o7M","domain":"localhost","timestamp":"20140626-0528","signature":"91085beccf57bf0df77c89df94d1055e631b36bc11941e61460b445b4ed774bc"},"request":{"reports":[{"id":"report-1","type":"sessions-summary","user_id":"$ANONYMIZED_USER_ID","session_ids":["AC023456-2C73-44DC-82DA28894FCBC3BF"]}]}}')
+      expect(init.generate(true)).to eq('{"security":{"consumer_key":"yis0TYCu7U9V4o7M","domain":"localhost","timestamp":"20140626-0528","signature":"$02$8e0069e7aa8058b47509f35be236c53fa1a878c64b12589fd42f48b568f6ac84"},"request":{"reports":[{"id":"report-1","type":"sessions-summary","user_id":"$ANONYMIZED_USER_ID","session_ids":["AC023456-2C73-44DC-82DA28894FCBC3BF"]}]}}')
     end
   end
 

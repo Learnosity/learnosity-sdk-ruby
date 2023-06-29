@@ -1,0 +1,14 @@
+<h1>Standalone Reports Example</h1>
+<span class="learnosity-report" id="session-detail"></span>
+<script src="https://reports.learnosity.com?latest-lts"></script>
+<script>
+var callbacks = {
+    readyListener: function () {
+        console.log("Learnosity Reports has successfully initialized.");
+    },
+    errorListener: function (err) {
+        console.log(err);
+    }
+};
+reportsApp = LearnosityReports.init( <%= raw @init.generate %>);
+</script>

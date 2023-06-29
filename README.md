@@ -70,7 +70,7 @@ Using RubyGems is the recommended way to install the Learnosity SDK for Ruby in 
 ### **Alternative method 1: download the zip file**
 Download the latest version of the SDK as a self-contained ZIP file from the [GitHub Releases](https://github.com/Learnosity/learnosity-sdk-ruby/releases) page. The distribution ZIP file contains all the necessary dependencies. 
 
-Note: after installation, run this command in the SDK root folder:
+Note: after installation, run this command in (docs/quickstart/lrn-sdk-rails/):
 
 ``` bash
     bundle install
@@ -83,7 +83,7 @@ To install from the terminal, run this command:
     git clone git@github.com:Learnosity/learnosity-sdk-Ruby.git
 ```
 
-Note: after installation, run this command in the SDK root folder:
+Note: after installation, run this command in (docs/quickstart/lrn-sdk-rails/):
 
 ``` bash
     bundle install
@@ -114,7 +114,18 @@ From this point on, we'll assume that your web server is available at this local
 
 http://localhost:3000
 
-The page will load. This is a basic example of an assessment loaded into a web page with Learnosity's assessment player. You can interact with this demo assessment to try out the various Question types.
+You can now access the APIs using the following URL [click here](http://localhost:3000)
+
+<img width="50%" height="50%" src="docs/images/image-quickstart-index.png">
+
+Following are the routes to access our APIs.
+
+* Author API : http://localhost:3000/author/index
+* Questions API : http://localhost:3000/questions/index
+* Items API : http://localhost:3000/items/index
+* Reports API : http://localhost:3000/reports/index
+
+Open these pages with your web browser. These are all basic examples of Learnosity's integration. You can interact with these demo pages to try out the various APIs. The Items API example is a basic example of an assessment loaded into a web page with Learnosity's assessment player. You can interact with this demo assessment to try out the various Question types.
 
 <img width="50%" height="50%" src="docs/images/image-quickstart-examples-assessment.png">
 
@@ -123,12 +134,12 @@ The page will load. This is a basic example of an assessment loaded into a web p
 ### **How it works**
 Let's walk through the code for this standalone assessment example. The source files are included under the `docs/quickstart/lrn-sdk-rails/` folder.
 
-The first section of code is a controller file in Ruby, [index_controller.rb](docs/quickstart/lrn-sdk-rails/app/controllers/index_controller.rb) from `docs/quickstart/lrn-sdk-rails/app/controllers/` and it is executed server-side. It constructs a set of configuration options for Items API, and securely signs them using the consumer key. We also add a few lines to [application.rb](docs/quickstart/lrn-sdk-rails/config/application.rb) for our Learnosity credentials. The second section is HTML and JavaScript in an [ERB](https://docs.ruby-lang.org/en/2.3.0/ERB.html) template [index.html.erb](docs/quickstart/lrn-sdk-rails/app/views/index/index.html.erb) and is executed client-side, once the page is loaded in the browser. It renders and runs the assessment functionality.
+Let's consider the Items API code. The first section is a controller file in Ruby, [items_controller.rb](docs/quickstart/lrn-sdk-rails/app/controllers/items_controller.rb) from `docs/quickstart/lrn-sdk-rails/app/controllers/` and it is executed server-side. It constructs a set of configuration options for Items API, and securely signs them using the consumer key. We also add a few lines to [application.rb](docs/quickstart/lrn-sdk-rails/config/application.rb) for our Learnosity credentials. The second section is HTML and JavaScript in an [ERB](https://docs.ruby-lang.org/en/2.3.0/ERB.html) template [index.html.erb](docs/quickstart/lrn-sdk-rails/app/views/items/index.html.erb) and is executed client-side, once the page is loaded in the browser. It renders and runs the assessment functionality.
 
 [(Back to top)](#table-of-contents)
 
 ### **Server-side code**
-We start by including some LearnositySDK helpers in [index_controller.rb](docs/quickstart/lrn-sdk-rails/app/controllers/index_controller.rb) - they'll make it easy to generate and sign the config options, and unique user and session IDs.
+We start by including some LearnositySDK helpers in [items_controller.rb](docs/quickstart/lrn-sdk-rails/app/controllers/items_controller.rb) - they'll make it easy to generate and sign the config options, and unique user and session IDs.
 
 ``` ruby
 require 'learnosity/sdk/request/init' # Learnosity helper.
@@ -228,7 +239,7 @@ This example uses plain HTML in an ERB template, served by Rails.
 ``` html
 <h1>Standalone Assessment Example</h1>
 <div id="learnosity_assess"></div>
-<script src="//items.learnosity.com?v2021.2.LTS"></script>
+<script src="https://items.learnosity.com/?latest-lts"></script>
 <script>
   var eventOptions = {
     readyListener: init
@@ -249,7 +260,7 @@ This example uses plain HTML in an ERB template, served by Rails.
 The important parts to be aware of in this HTML are:
 
 * A div with `id="learnosity_assess"`. This is where the Learnosity assessment player will be rendered to deliver the assessment.
-* The `<script src="https://items.learnosity.com/?v2021.2.LTS"></script>` tag, which includes Learnosity's Items API on the page and makes the global `LearnosityItems` object available. The version specified as `v2021.2.LTS` will retrieve that specific [Long Term Support (LTS) version](https://help.learnosity.com/hc/en-us/articles/360001268538-Release-Cadence-and-Version-Lifecycle). In production, you should always pin to a specific LTS version to ensure version compatibility.
+* The `<script src="https://items.learnosity.com/?latest-lts"></script>` tag, which includes Learnosity's Items API on the page and makes the global `LearnosityItems` object available. The version specified as `latest-lts` will retrieve the latest version supported. To know more about switching to a specific LTS version, visit our [Long Term Support (LTS) page](https://help.learnosity.com/hc/en-us/articles/360001268538-Release-Cadence-and-Version-Lifecycle). In production, you should always pin to a specific LTS version to ensure version compatibility.
 * The call to `LearnosityItems.init()`, which initiates Items API to inject the assessment player into the page.
 * The variable `<%= raw @init.generate %>` dynamically sends the contents of our init options to JavaScript, so it can be passed to `init()`.
 
