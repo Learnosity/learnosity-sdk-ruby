@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [v0.3.0] - 2024-07-12
+### Added
+- Add support for api-authoraide.
+
 ## [v0.2.2] - 2023-06-29
 ### Security
 - Upgraded signature to match the security standard.

@@ -19,7 +19,7 @@ module Learnosity
         @@valid_security_keys = ['consumer_key', 'domain', 'timestamp', 'expires', 'user_id'];
 
         # Service names that are valid for `$service`
-        @@valid_services = ['assess', 'author', 'data', 'events', 'items', 'questions', 'reports'];
+        @@valid_services = ['assess', 'author', 'data', 'events', 'items', 'questions', 'reports', 'authoraide'];
 
         # Determines if telemetry is enabled
         @@telemetry_enabled = true
@@ -77,7 +77,7 @@ module Learnosity
           output = {}
 
           case @service
-          when 'assess', 'author', 'data', 'items', 'reports'
+          when 'assess', 'author', 'data', 'items', 'reports', 'authoraide'
             output['security'] =  @security_packet
 
             unless @request_packet.nil?
@@ -258,7 +258,7 @@ module Learnosity
               hashed_users[k] =  hash_value(k , @secret)
             end
             @request_packet['users'] = hashed_users
-          when 'author', 'data'
+          when 'author', 'data', 'authoraide'
             @sign_request_data = true
           else
             raise Exception, "set_service_options() for #{@service} not implemented"
