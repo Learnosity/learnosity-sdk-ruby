@@ -17,8 +17,8 @@ class ReportsController < ApplicationController
                           "reports" => [{
                               "id"=> "session-detail",
                               "type"=> "session-detail-by-item",
-                              "user_id"=> "906d564c-39d4-44ba-8ddc-2d44066e2ba9",
-                              "session_id"=> "906d564c-39d4-44ba-8ddc-2d44066e2ba9"
+                              "user_id"=> "student_0001",
+                              "session_id"=> "ef4f80b8-e281-41f4-9efd-349b7eb9dd37"
                           }]
                       }
   def index
