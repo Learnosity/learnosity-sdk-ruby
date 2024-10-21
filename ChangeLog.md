@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- Bumped 3rd party libraries to fix known vulnerabilities in the quick start application
+- Fixed seed data for the api-reports example in the quick start application  
 
 ## [v0.3.0] - 2024-07-12
 ### Added
