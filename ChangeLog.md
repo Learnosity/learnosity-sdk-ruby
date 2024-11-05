@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+- Bumped 3rd party libraries to fix known vulnerabilities in the quick start application
+- Fixed seed data for the api-reports example in the quick start application  
+
 ## [v0.3.0] - 2024-07-12
 ### Added
 - Add support for api-authoraide.
