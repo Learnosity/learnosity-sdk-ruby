@@ -1,8 +1,10 @@
 require "learnosity/sdk/version"
+require "learnosity/sdk/request/data_api"
 
 module Learnosity
   module Sdk
-    # Your code goes here...
+    # Export DataApi class for convenient access
+    DataApi = Request::DataApi
   end
 end
 

@@ -106,16 +106,67 @@ request = init.generate
 Net::HTTP.post_form URI('https://data.learnosity.com/v1/itembank/items'), request
 ```
 
-### Recursive Queries
+### DataApi Class (Recommended)
 
-tl;dr: not currently implemented
+The SDK now includes a dedicated `DataApi` class that provides a more convenient way to interact with the Data API, including automatic pagination support, routing metadata headers, and simplified request handling.
+
+```ruby
+require 'learnosity/sdk/request/data_api'
+
+# Initialize DataApi
+data_api = Learnosity::Sdk::Request::DataApi.new(
+  consumer_key: 'your_consumer_key',
+  consumer_secret: 'your_consumer_secret',
+  domain: 'yourdomain.com'
+)
+
+security_packet = {
+  'consumer_key' => 'your_consumer_key',
+  'domain' => 'yourdomain.com'
+}
+
+# Make a single request
+response = data_api.request(
+  'https://data.learnosity.com/v1/itembank/items',
+  security_packet,
+  'your_consumer_secret',
+  { 'limit' => 10 },
+  'get'
+)
+
+# Iterate through all pages automatically
+data_api.request_iter(
+  'https://data.learnosity.com/v1/itembank/items',
+  security_packet,
+  'your_consumer_secret',
+  { 'limit' => 100 },
+  'get'
+).each do |page|
+  puts "Page has #{page['data'].length} items"
+end
+
+# Iterate through individual results
+data_api.results_iter(
+  'https://data.learnosity.com/v1/itembank/items',
+  security_packet,
+  'your_consumer_secret',
+  { 'limit' => 100 },
+  'get'
+).each do |item|
+  puts "Item: #{item['reference']}"
+end
+```
+
+See the [Data API documentation](docs/DataApi.md) for more details and examples.
+
+### Recursive Queries (Legacy Approach)
 
 Some requests are paginated to the `limit` passed in the request, or some
 server-side default. Responses to those requests contain a `next` parameter in
 their `meta` property, which can be placed in the next request to access another
 page of data.
 
-For the time being, you can iterate through pages by looping over the
+You can iterate through pages by looping over the
 `Init#new`/`Init#generate`/`Net::HTTP#post_form`, updating the `next` attribute
 in the request.
 
@@ -128,6 +179,8 @@ end
 ```
 
 This will `require 'json'` to be able to parse the response.
+
+**Note:** The new `DataApi` class (see above) handles pagination automatically and is the recommended approach.
 
 See `examples/simple/init_data.rb` for an example.
 
