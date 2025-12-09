@@ -95,7 +95,7 @@ RSpec.describe 'DataApi Integration Tests' do
       test_cases.each do |test_case|
         captured_action = nil
 
-        mock_adapter = lambda do |url, signed_request, headers|
+        mock_adapter = lambda do |_url, _signed_request, headers|
           captured_action = headers['X-Learnosity-Action']
 
           double('response',

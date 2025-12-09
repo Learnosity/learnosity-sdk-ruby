@@ -72,28 +72,15 @@ module Learnosity
             request = deep_copy(request_packet)
             data_end = false
 
-            while !data_end
+            until data_end
               response = request(endpoint, security, secret, request, action)
+              validate_response(response)
 
-              unless response.is_a?(Net::HTTPSuccess)
-                raise "Server returned HTTP status #{response.code}: #{response.body}"
-              end
+              data = parse_response_body(response)
+              validate_response_status(data)
 
-              begin
-                data = JSON.parse(response.body)
-              rescue JSON::ParserError => e
-                raise "Server returned invalid JSON: #{response.body}"
-              end
-
-              if data['meta'] && data['meta']['next'] && data['data'] && !data['data'].empty?
-                request['next'] = data['meta']['next']
-              else
-                data_end = true
-              end
-
-              unless data['meta'] && data['meta']['status']
-                raise "Server returned unsuccessful status: #{data.to_json}"
-              end
+              data_end = !has_more_pages?(data)
+              request['next'] = data['meta']['next'] if data['meta'] && data['meta']['next']
 
               yielder << data
             end
@@ -172,6 +159,30 @@ module Learnosity
         # Deep copy a hash to avoid mutation
         def deep_copy(obj)
           Marshal.load(Marshal.dump(obj))
+        end
+
+        # Validate HTTP response
+        def validate_response(response)
+          return if response.is_a?(Net::HTTPSuccess)
+          raise "Server returned HTTP status #{response.code}: #{response.body}"
+        end
+
+        # Parse response body as JSON
+        def parse_response_body(response)
+          JSON.parse(response.body)
+        rescue JSON::ParserError
+          raise "Server returned invalid JSON: #{response.body}"
+        end
+
+        # Validate response has successful status
+        def validate_response_status(data)
+          return if data['meta'] && data['meta']['status']
+          raise "Server returned unsuccessful status: #{data.to_json}"
+        end
+
+        # Check if there are more pages to fetch
+        def has_more_pages?(data)
+          data['meta'] && data['meta']['next'] && data['data'] && !data['data'].empty?
         end
       end
     end

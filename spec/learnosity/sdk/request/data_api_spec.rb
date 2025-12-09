@@ -190,7 +190,7 @@ RSpec.describe Learnosity::Sdk::Request::DataApi do
       ]
 
       call_count = 0
-      mock_adapter = lambda do |url, signed_request, headers|
+      mock_adapter = lambda do |_url, _signed_request, _headers|
         response = mock_responses[call_count]
         call_count += 1
         response
@@ -221,7 +221,7 @@ RSpec.describe Learnosity::Sdk::Request::DataApi do
         body: 'Internal Server Error'
       )
 
-      mock_adapter = lambda { |url, signed_request, headers| mock_response }
+      mock_adapter = ->(_url, _signed_request, _headers) { mock_response }
 
       data_api = described_class.new(config.merge(http_adapter: mock_adapter))
 
