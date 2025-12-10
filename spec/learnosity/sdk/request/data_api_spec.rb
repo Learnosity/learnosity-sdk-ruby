@@ -268,7 +268,7 @@ RSpec.describe Learnosity::Sdk::Request::DataApi do
         })
       )
 
-      mock_adapter = lambda { |url, signed_request, headers| mock_response }
+      mock_adapter = ->(_url, _signed_request, _headers) { mock_response }
 
       data_api = described_class.new(config.merge(http_adapter: mock_adapter))
 
