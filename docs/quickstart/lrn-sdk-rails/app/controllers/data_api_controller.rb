@@ -2,6 +2,10 @@ require 'learnosity/sdk/request/data_api'
 require 'json'
 
 class DataApiController < ApplicationController
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # Note: This is a demo/quickstart controller that intentionally demonstrates
+  # three different Data API usage patterns (manual iteration, page iteration,
+  # and results iteration) with comprehensive error handling for educational purposes.
   def index
     # Initialize DataApi
     data_api = Learnosity::Sdk::Request::DataApi.new(
@@ -138,5 +142,6 @@ class DataApiController < ApplicationController
       @demo3_error = e.message
     end
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
 end
 
