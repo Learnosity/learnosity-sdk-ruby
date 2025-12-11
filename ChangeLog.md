@@ -7,8 +7,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- Data API support with dedicated `DataApi` class
+  - `request()` method for single authenticated Data API requests
+  - `request_iter()` method for iterating through paginated responses
+  - `results_iter()` method for iterating through individual results across pages
+  - Automatic routing metadata headers: `X-Learnosity-Consumer`, `X-Learnosity-Action`, `X-Learnosity-SDK`
+- Data API demo added to Rails quickstart application
+- Comprehensive unit and integration tests for Data API functionality
+- Example usage in `examples/simple/data_api_example.rb`
+
+### Fixed
+- Ruby 2.6 compatibility in Rails quickstart (commented out `spring` gems that require Ruby 2.7+)
+- Rails 6.1 compatibility with Ruby 2.6 (added `require 'logger'` to `config/boot.rb`)
 - Bumped 3rd party libraries to fix known vulnerabilities in the quick start application
-- Fixed seed data for the api-reports example in the quick start application  
+- Fixed seed data for the api-reports example in the quick start application
 
 ## [v0.3.0] - 2024-07-12
 ### Added
