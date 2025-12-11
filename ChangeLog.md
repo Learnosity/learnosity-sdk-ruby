@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Added
+
 - Data API support with dedicated `DataApi` class
   - `request()` method for single authenticated Data API requests
   - `request_iter()` method for iterating through paginated responses
@@ -18,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Example usage in `examples/simple/data_api_example.rb`
 
 ### Fixed
+
 - Ruby 2.6 compatibility in Rails quickstart (commented out `spring` gems that require Ruby 2.7+)
 - Rails 6.1 compatibility with Ruby 2.6 (added `require 'logger'` to `config/boot.rb`)
 - Bumped 3rd party libraries to fix known vulnerabilities in the quick start application
