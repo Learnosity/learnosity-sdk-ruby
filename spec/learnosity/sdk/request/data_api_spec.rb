@@ -36,21 +36,21 @@ RSpec.describe Learnosity::Sdk::Request::DataApi do
   describe '#extract_consumer' do
     it 'extracts consumer key from security packet with string keys' do
       data_api = described_class.new(config)
-      consumer = data_api.send(:extract_consumer, security_packet)
+      consumer = data_api.extract_consumer(security_packet)
 
       expect(consumer).to eq(config[:consumer_key])
     end
 
     it 'extracts consumer key from security packet with symbol keys' do
       data_api = described_class.new(config)
-      consumer = data_api.send(:extract_consumer, { consumer_key: config[:consumer_key] })
+      consumer = data_api.extract_consumer({ consumer_key: config[:consumer_key] })
 
       expect(consumer).to eq(config[:consumer_key])
     end
 
     it 'returns empty string if no consumer key' do
       data_api = described_class.new(config)
-      consumer = data_api.send(:extract_consumer, {})
+      consumer = data_api.extract_consumer({})
 
       expect(consumer).to eq('')
     end
@@ -59,7 +59,7 @@ RSpec.describe Learnosity::Sdk::Request::DataApi do
   describe '#derive_action' do
     it 'derives action from endpoint with version' do
       data_api = described_class.new(config)
-      action = data_api.send(:derive_action,
+      action = data_api.derive_action(
         'https://data.learnosity.com/v2023.1.LTS/itembank/items',
         'get'
       )
@@ -69,7 +69,7 @@ RSpec.describe Learnosity::Sdk::Request::DataApi do
 
     it 'derives action from endpoint with latest' do
       data_api = described_class.new(config)
-      action = data_api.send(:derive_action,
+      action = data_api.derive_action(
         'https://data.learnosity.com/latest/itembank/items',
         'get'
       )
@@ -79,7 +79,7 @@ RSpec.describe Learnosity::Sdk::Request::DataApi do
 
     it 'derives action from endpoint without version' do
       data_api = described_class.new(config)
-      action = data_api.send(:derive_action,
+      action = data_api.derive_action(
         'https://data.learnosity.com/itembank/items',
         'get'
       )
@@ -89,7 +89,7 @@ RSpec.describe Learnosity::Sdk::Request::DataApi do
 
     it 'handles trailing slash' do
       data_api = described_class.new(config)
-      action = data_api.send(:derive_action,
+      action = data_api.derive_action(
         'https://data.learnosity.com/v1/itembank/items/',
         'get'
       )
@@ -99,7 +99,7 @@ RSpec.describe Learnosity::Sdk::Request::DataApi do
 
     it 'handles v1 version' do
       data_api = described_class.new(config)
-      action = data_api.send(:derive_action,
+      action = data_api.derive_action(
         'https://data.learnosity.com/v1/itembank/items',
         'get'
       )
@@ -109,7 +109,7 @@ RSpec.describe Learnosity::Sdk::Request::DataApi do
 
     it 'handles latest-lts version' do
       data_api = described_class.new(config)
-      action = data_api.send(:derive_action,
+      action = data_api.derive_action(
         'https://data.learnosity.com/latest-lts/itembank/items',
         'get'
       )
@@ -119,7 +119,7 @@ RSpec.describe Learnosity::Sdk::Request::DataApi do
 
     it 'handles developer version' do
       data_api = described_class.new(config)
-      action = data_api.send(:derive_action,
+      action = data_api.derive_action(
         'https://data.learnosity.com/developer/itembank/items',
         'get'
       )

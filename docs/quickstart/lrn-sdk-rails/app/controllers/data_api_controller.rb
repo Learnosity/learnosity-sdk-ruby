@@ -30,8 +30,8 @@ class DataApiController < ApplicationController
       action: 'get',
       status_code: nil,
       headers: {
-        'X-Learnosity-Consumer' => data_api.send(:extract_consumer, security_packet),
-        'X-Learnosity-Action' => data_api.send(:derive_action, itembank_uri, 'get'),
+        'X-Learnosity-Consumer' => data_api.extract_consumer(security_packet),
+        'X-Learnosity-Action' => data_api.derive_action(itembank_uri, 'get'),
         'X-Learnosity-SDK' => "Ruby:#{sdk_version}"
       }
     }
@@ -55,7 +55,7 @@ class DataApiController < ApplicationController
         # Capture status code from the first request
         @request_metadata[:status_code] = result.code if i == 0
 
-        response = JSON.parse(result.body)
+        response = JSON.parse(result.body) rescue { 'raw_body' => result.body }
 
         if response['data'] && response['data'].length > 0
           item = response['data'][0]
@@ -73,7 +73,10 @@ class DataApiController < ApplicationController
         end
       end
     rescue => e
-      @demo1_error = e.message
+      @demo1_error = {
+        error: "#{e.class}: #{e.message}",
+        backtrace: e.backtrace&.first(5)
+      }
     end
 
     # Demo 2: Page iteration (5 pages)
@@ -111,7 +114,10 @@ class DataApiController < ApplicationController
         break if page_count >= 5
       end
     rescue => e
-      @demo2_error = e.message
+      @demo2_error = {
+        error: "#{e.class}: #{e.message}",
+        backtrace: e.backtrace&.first(5)
+      }
     end
 
     # Demo 3: Results iteration (5 items)
@@ -139,7 +145,10 @@ class DataApiController < ApplicationController
         break if result_count >= 5
       end
     rescue => e
-      @demo3_error = e.message
+      @demo3_error = {
+        error: "#{e.class}: #{e.message}",
+        backtrace: e.backtrace&.first(5)
+      }
     end
   end
   # rubocop:enable Metrics/CyclomaticComplexity

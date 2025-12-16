@@ -263,9 +263,9 @@
         <% else %>
             <% @demo3_output.each do |item| %>
                 <div class="item">
-                    <div class="item-reference">Item <%= item[:number] %>: <%= item[:reference] %></div>
-                    <div class="item-status">Status: <%= item[:status] %></div>
-                    <pre><%= item[:json] %>...</pre>
+                    <div class="item-reference">Item <%= item[:number] %>: <%= h item[:reference] %></div>
+                    <div class="item-status">Status: <%= h item[:status] %></div>
+                    <pre><%= h item[:json] %>...</pre>
                 </div>
             <% end %>
         <% end %>

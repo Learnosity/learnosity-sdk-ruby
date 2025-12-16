@@ -69,6 +69,7 @@ RSpec.describe 'DataApi Integration Tests' do
       # Verify security contains signature
       security = JSON.parse(captured_request[:signed_request]['security'])
       expect(security['signature']).to be_a(String)
+      # '$02$' is the Learnosity signature format prefix (version 2)
       expect(security['signature']).to start_with('$02$')
     end
 

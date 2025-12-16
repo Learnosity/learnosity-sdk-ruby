@@ -69,18 +69,18 @@ module Learnosity
           Enumerator.new do |yielder|
             # Deep copy to avoid mutation
             security = deep_copy(security_packet)
-            request = deep_copy(request_packet)
+            request_params = deep_copy(request_packet)
             data_end = false
 
             until data_end
-              response = request(endpoint, security, secret, request, action)
+              response = self.request(endpoint, security, secret, request_params, action)
               validate_response(response)
 
               data = parse_response_body(response)
               validate_response_status(data)
 
               data_end = !has_more_pages?(data)
-              request['next'] = data['meta']['next'] if data['meta'] && data['meta']['next']
+              request_params['next'] = data['meta']['next'] if data['meta'] && data['meta']['next']
 
               yielder << data
             end
@@ -116,20 +116,6 @@ module Learnosity
           end
         end
 
-        private
-
-        # Default HTTP adapter using Net::HTTP
-        def default_http_adapter(endpoint, signed_request, headers)
-          uri = URI.parse(endpoint)
-          http = Net::HTTP.new(uri.host, uri.port)
-          http.use_ssl = (uri.scheme == 'https')
-
-          request = Net::HTTP::Post.new(uri.request_uri, headers)
-          request.set_form_data(signed_request)
-
-          http.request(request)
-        end
-
         # Extract consumer key from security packet
         def extract_consumer(security_packet)
           security_packet['consumer_key'] || security_packet[:consumer_key] || ''
@@ -156,9 +142,24 @@ module Learnosity
           "#{action}_#{path}"
         end
 
+        private
+
+        # Default HTTP adapter using Net::HTTP
+        def default_http_adapter(endpoint, signed_request, headers)
+          uri = URI.parse(endpoint)
+          http = Net::HTTP.new(uri.host, uri.port)
+          http.use_ssl = (uri.scheme == 'https')
+
+          request = Net::HTTP::Post.new(uri.request_uri, headers)
+          request.set_form_data(signed_request)
+
+          http.request(request)
+        end
+
         # Deep copy a hash to avoid mutation
+        # Using JSON serialization instead of Marshal for security
         def deep_copy(obj)
-          Marshal.load(Marshal.dump(obj))
+          JSON.parse(JSON.generate(obj))
         end
 
         # Validate HTTP response
@@ -176,7 +177,7 @@ module Learnosity
 
         # Validate response has successful status
         def validate_response_status(data)
-          return if data['meta'] && data['meta']['status']
+          return if data.dig('meta', 'status') == true
           raise "Server returned unsuccessful status: #{data.to_json}"
         end
 
