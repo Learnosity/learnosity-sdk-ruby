@@ -149,6 +149,8 @@ module Learnosity
           uri = URI.parse(endpoint)
           http = Net::HTTP.new(uri.host, uri.port)
           http.use_ssl = (uri.scheme == 'https')
+          http.open_timeout = 15  # seconds to establish connection
+          http.read_timeout = 60  # seconds to read response
 
           request = Net::HTTP::Post.new(uri.request_uri, headers)
           request.set_form_data(signed_request)
