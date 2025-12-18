@@ -98,6 +98,9 @@ For production use, you should install the SDK using the RubyGems package manage
 Let's take a look at a simple example of the SDK in action. In this example, we'll load an assessment into the browser.
 
 ### **Start up your web server and view the standalone assessment example**
+
+**Note:** The Rails quickstart supports Ruby 2.6+. The `spring` and `spring-watcher-listen` gems are commented out in the Gemfile for Ruby 2.6 compatibility. If you're using Ruby 2.7+, you can uncomment these gems for faster development reloading.
+
 To start up your Ruby web server, first find the following folder location under the SDK. Change directory ('cd') to this location on the command line.
 
 ``` bash
@@ -107,6 +110,7 @@ To start up your Ruby web server, first find the following folder location under
 To start, run this command from that folder:
 
 ``` bash
+    bundle install
     rails server
 ```
 
@@ -276,6 +280,9 @@ Take a look at some more in-depth options and tutorials on using Learnosity asse
 
 ### **SDK reference**
 See a more detailed breakdown of all the SDK features, and examples of how to use more advanced or specialised features on the [SDK reference page](REFERENCE.md).
+
+### **Data API support**
+The SDK now includes comprehensive Data API support with automatic request signing, routing metadata headers, and pagination support. See the [Data API documentation](docs/DataApi.md) for detailed usage examples and API reference.
 
 ### **Additional quick start guides**
 There are more quick start guides, going beyond the initial quick start topic of loading an assessment, these further tutorials show how to set up authoring and analytics:

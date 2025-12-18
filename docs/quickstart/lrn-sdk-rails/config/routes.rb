@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get 'authoraide/index' , as: 'authoraide_index'
   get 'reports/index', as: 'reports_index'
   get 'items/index', as: 'items_index'
+  get 'data_api/index', as: 'data_api_index'
 #   get 'abc' , to: "index#index"
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
