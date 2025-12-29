@@ -147,7 +147,7 @@ We start by including some LearnositySDK helpers in [items_controller.rb](docs/q
 
 ``` ruby
 require 'learnosity/sdk/request/init' # Learnosity helper.
-require 'securerandom'                # Library for generating UUIDs.
+require 'learnosity/sdk'               # For UUID generation utility.
 ```
 
 Now we'll declare the configuration options for Items API. The following options specify which assessment content should be rendered, how it should be displayed, which user is taking this assessment and how their responses should be stored. 
