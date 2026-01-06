@@ -1,4 +1,5 @@
 require "spec_helper"
+require "set"
 require "learnosity/sdk/utils/uuid"
 
 RSpec.describe Learnosity::Sdk::Utils::Uuid do
