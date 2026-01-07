@@ -186,8 +186,15 @@ See `examples/simple/init_data.rb` for an example.
 
 ### Generating UUIDs
 
-You will need to generate UUIDs. You can use the Ruby `securerandom`
-module for this purpose.
+You will need to generate UUIDs for user IDs and session IDs. The SDK provides a convenient utility for this purpose.
+
+```ruby
+require 'learnosity/sdk'
+
+p Learnosity::Sdk::Uuid.generate
+```
+
+Alternatively, you can use the Ruby `securerandom` module directly:
 
 ```ruby
 require 'securerandom'

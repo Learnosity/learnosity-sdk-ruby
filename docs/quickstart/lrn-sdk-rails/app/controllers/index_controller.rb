@@ -1,5 +1,5 @@
 require 'learnosity/sdk/request/init' # Learnosity helper.
-require 'securerandom'                # Library for generating UUIDs.
+require 'learnosity/sdk'               # For UUID generation utility.
 
 class IndexController < ApplicationController
 

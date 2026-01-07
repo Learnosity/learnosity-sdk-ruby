@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+- UUID generation utility (`Learnosity::Sdk::Uuid.generate()`) for feature parity with Python and Node.js SDKs
+  - Provides a consistent API pattern across all Learnosity SDKs
+  - Lightweight wrapper around Ruby's `SecureRandom.uuid`
+  - Commonly used for generating `user_id` and `session_id` values
+  - Accessible via `Learnosity::Sdk::Uuid.generate`
+  - Comprehensive unit tests included
 - Data API support with dedicated `DataApi` class
   - `request()` method for single authenticated Data API requests
   - `request_iter()` method for iterating through paginated responses
@@ -17,6 +23,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Data API demo added to Rails quickstart application
 - Comprehensive unit and integration tests for Data API functionality
 - Example usage in `examples/simple/data_api_example.rb`
+
+### Changed
+
+- Updated documentation and examples to use `Learnosity::Sdk::Uuid.generate` instead of `SecureRandom.uuid`
+- Updated README.md and REFERENCE.md with UUID utility usage examples
 
 ### Fixed
 

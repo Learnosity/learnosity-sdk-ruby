@@ -1,5 +1,5 @@
 require 'learnosity/sdk/request/init' # Learnosity helper.
-require 'securerandom'                # Library for generating UUIDs.
+require 'learnosity/sdk'               # For UUID generation utility.
 
 class ItemsController < ApplicationController
   @@security_packet = {
@@ -12,9 +12,9 @@ class ItemsController < ApplicationController
   @@consumer_secret = Rails.configuration.consumer_secret
 
   @@items_request = {
-    "user_id" => SecureRandom.uuid,
+    "user_id" => Learnosity::Sdk::Uuid.generate,
     "activity_template_id" => "quickstart_examples_activity_template_001",
-    "session_id" => SecureRandom.uuid,
+    "session_id" => Learnosity::Sdk::Uuid.generate,
     "activity_id" => "quickstart_examples_activity_001",
     "rendering_type" => "assess",
     "type" => "submit_practice",
