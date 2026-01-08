@@ -7,19 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [v0.4.0] - 2026-01-07
+
 ### Added
 
 - UUID generation utility (`Learnosity::Sdk::Uuid.generate()`) for feature parity with Python and Node.js SDKs
-  - Provides a consistent API pattern across all Learnosity SDKs
-  - Lightweight wrapper around Ruby's `SecureRandom.uuid`
-  - Commonly used for generating `user_id` and `session_id` values
-  - Accessible via `Learnosity::Sdk::Uuid.generate`
-  - Comprehensive unit tests included
 - Data API support with dedicated `DataApi` class
   - `request()` method for single authenticated Data API requests
   - `request_iter()` method for iterating through paginated responses
   - `results_iter()` method for iterating through individual results across pages
   - Automatic routing metadata headers: `X-Learnosity-Consumer`, `X-Learnosity-Action`, `X-Learnosity-SDK`
+  - HTTP timeout configurations (15s open timeout, 60s read timeout)
 - Data API demo added to Rails quickstart application
 - Comprehensive unit and integration tests for Data API functionality
 - Example usage in `examples/simple/data_api_example.rb`
@@ -27,7 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 - Updated documentation and examples to use `Learnosity::Sdk::Uuid.generate` instead of `SecureRandom.uuid`
-- Updated README.md and REFERENCE.md with UUID utility usage examples
+- Improved error handling in Data API controller with detailed error messages and backtraces
 
 ### Fixed
 
@@ -35,6 +33,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Rails 6.1 compatibility with Ruby 2.6 (added `require 'logger'` to `config/boot.rb`)
 - Bumped 3rd party libraries to fix known vulnerabilities in the quick start application
 - Fixed seed data for the api-reports example in the quick start application
+- Code quality improvements addressing Codacy findings
 
 ## [v0.3.0] - 2024-07-12
 ### Added
