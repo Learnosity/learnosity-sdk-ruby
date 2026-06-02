@@ -5,7 +5,6 @@
 An official Learnosity open-source project.</p>
 
 [![Latest Stable Version](https://badge.fury.io/gh/Learnosity%2Flearnosity-sdk-ruby.svg)](https://rubygems.org/gems/learnosity-sdk)
-[![Build Status](https://app.travis-ci.com/Learnosity/learnosity-sdk-ruby.svg?branch=master)](https://app.travis-ci.com/Learnosity/learnosity-sdk-ruby)
 [![License](docs/images/apache-license.svg)](LICENSE.md)
 [![Downloads](docs/images/downloads.svg)](https://github.com/Learnosity/learnosity-sdk-ruby/releases)
 ---
